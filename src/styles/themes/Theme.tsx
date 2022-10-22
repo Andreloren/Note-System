@@ -1,6 +1,5 @@
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
+
 import {
   useTheme,
   ThemeProvider,
@@ -10,6 +9,7 @@ import {
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Button, CssBaseline } from "@mui/material";
+
 import PagesRoutes from "../../routes/PagesRoutes";
 import { ThemeStyle } from "../themes/ThemeStyled";
 
