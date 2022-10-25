@@ -1,11 +1,6 @@
 import * as React from "react";
 
-import {
-  useTheme,
-  ThemeProvider,
-  createTheme,
-  styled,
-} from "@mui/material/styles";
+import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Button, CssBaseline } from "@mui/material";
