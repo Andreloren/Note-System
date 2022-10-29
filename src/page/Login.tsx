@@ -6,7 +6,7 @@ import {
   boxStyled,
   paperStyled,
   formBoxStyled,
-} from "../shared/components/home/HomeStyled";
+} from "../shared/components/login/LoginStyled";
 import InputSenha, { Input } from "../shared/components/inputs/Input";
 import { Label } from "../shared/components/label/Label";
 import { Button } from "../shared/components/button/Button";
@@ -14,16 +14,16 @@ import { buttonStyled } from "../shared/components/button/ButtonStyled";
 import { Link } from "../shared/components/footer/Footer";
 import { FooterStyled } from "../shared/components/footer/FooterStyled";
 
-export const Home: React.FC = () => {
+export const Login: React.FC = () => {
   return (
     <Box sx={boxStyled}>
       <Paper elevation={3} sx={paperStyled}>
         <Logo />
-        <Heading texto="Note System" tamanho="h4" sx={{ mx: 3, mt: 3 }} />
+        <Heading texto="Note System" tamanho="h4" sx={{ mx: 3, mt: 1 }} />
         <Heading
           texto="Faça login e comece a usar!"
           tamanho="h6"
-          sx={{ mx: 3, mt: 2 }}
+          sx={{ mx: 3, mt: 1 }}
         />
         <Box sx={formBoxStyled}>
           <Label htmlFor="cpf" texto="Digite seu CPF"></Label>

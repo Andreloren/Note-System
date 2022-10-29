@@ -12,8 +12,8 @@ export const paperStyled = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "20px 25px 35px",
-  margin: "0 20px 100px",
+  padding: "10px 25px 10px",
+  margin: "-70px 0 10px",
 };
 
 export const formBoxStyled = {
