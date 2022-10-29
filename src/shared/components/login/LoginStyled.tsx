@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const boxStyled = {
+export const boxStyledLog = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -8,15 +8,15 @@ export const boxStyled = {
   height: "100vh",
 };
 
-export const paperStyled = {
+export const paperStyledLog = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "10px 25px 10px",
-  margin: "-70px 0 10px",
+  padding: "10px 25px",
+  position: "absolute",
 };
 
-export const formBoxStyled = {
+export const formBoxStyledLog = {
   display: "flex",
   flexDirection: "column",
   alignItens: "stretch",

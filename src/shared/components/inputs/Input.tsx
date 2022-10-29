@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { textFieldColor } from "../tipos/Tipos";
+import { inputLabel, inputSize, textFieldColor } from "../tipos/Tipos";
 
 //INPUT EMAIL
 interface InputProps {
@@ -20,6 +20,7 @@ interface InputProps {
   cor: textFieldColor;
   tamanhoInput: string;
   identificador: string;
+  size: inputSize;
 }
 
 export function Input(props: InputProps) {
@@ -34,6 +35,7 @@ export function Input(props: InputProps) {
     >
       <div>
         <TextField
+          size={props.size}
           helperText={props.textoajuda}
           label={props.placeholder}
           id={props.identificador}
@@ -53,6 +55,8 @@ interface State {
   cor?: textFieldColor;
   tamanhoInput?: string;
   identificador?: string;
+  sizeLabel?: inputLabel;
+  sizeInput?: inputSize;
 }
 
 export default function InputSenha(props: State) {
@@ -86,10 +90,14 @@ export default function InputSenha(props: State) {
           sx={{ m: 1, width: props.tamanhoInput }}
           variant="outlined"
         >
-          <InputLabel htmlFor="outlined-adornment-password">
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            size={props.sizeLabel}
+          >
             {props.placeholder}
           </InputLabel>
           <OutlinedInput
+            size={props.sizeInput}
             color={props.cor}
             id={props.identificador}
             type={values.showPassword ? "text" : "password"}

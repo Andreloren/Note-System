@@ -3,9 +3,9 @@ import { Box, Paper } from "@mui/material";
 import { Logo } from "../shared/components/logo/Logo";
 import { Heading } from "../shared/components/heading/Heading";
 import {
-  boxStyled,
-  paperStyled,
-  formBoxStyled,
+  boxStyledLog,
+  paperStyledLog,
+  formBoxStyledLog,
 } from "../shared/components/login/LoginStyled";
 import InputSenha, { Input } from "../shared/components/inputs/Input";
 import { Label } from "../shared/components/label/Label";
@@ -16,8 +16,8 @@ import { FooterStyled } from "../shared/components/footer/FooterStyled";
 
 export const Login: React.FC = () => {
   return (
-    <Box sx={boxStyled}>
-      <Paper elevation={3} sx={paperStyled}>
+    <Box sx={boxStyledLog}>
+      <Paper elevation={3} sx={paperStyledLog}>
         <Logo />
         <Heading texto="Note System" tamanho="h4" sx={{ mx: 3, mt: 1 }} />
         <Heading
@@ -25,9 +25,10 @@ export const Login: React.FC = () => {
           tamanho="h6"
           sx={{ mx: 3, mt: 1 }}
         />
-        <Box sx={formBoxStyled}>
+        <Box sx={formBoxStyledLog}>
           <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
           <Input
+            size="medium"
             placeholder="CPF"
             valor=""
             textoajuda=""

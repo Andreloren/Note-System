@@ -24,6 +24,9 @@ export type inputLabelColor =
   | "warning"
   | string;
 
+export type inputSize = "medium" | "small" | undefined;
+export type inputLabel = "normal" | "small";
+
 export type textFieldColor =
   | "primary"
   | "secondary"
