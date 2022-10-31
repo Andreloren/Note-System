@@ -10,56 +10,83 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { inputLabel, inputSize, textFieldColor } from "../tipos/Tipos";
+import { inputLabel, inputSize, label, textFieldColor } from "../tipos/Tipos";
 
 //INPUT EMAIL
 interface InputProps {
-  placeholder: string;
+  placeholder: label;
   valor?: string;
-  textoajuda?: string;
+  textoAjuda?: string;
   cor: textFieldColor;
   tamanhoInput: string;
   identificador: string;
   size: inputSize;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  error?: boolean;
 }
 
-export function Input(props: InputProps) {
+export const Input: React.FC<InputProps> = ({
+  placeholder,
+  valor,
+  textoAjuda,
+  cor,
+  tamanhoInput,
+  identificador,
+  size,
+  onChange,
+  error,
+}) => {
   return (
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: props.tamanhoInput },
+        "& .MuiTextField-root": { m: 1, width: tamanhoInput },
       }}
       noValidate
       autoComplete="off"
     >
       <div>
         <TextField
-          size={props.size}
-          helperText={props.textoajuda}
-          label={props.placeholder}
-          id={props.identificador}
-          defaultValue={props.valor}
-          color={props.cor}
+          error={error}
+          onChange={onChange}
+          size={size}
+          helperText={textoAjuda}
+          label={placeholder}
+          id={identificador}
+          defaultValue={valor}
+          color={cor}
         />
       </div>
     </Box>
   );
-}
+};
 
 //INPUT SENHA
 interface State {
   password?: string;
   showPassword?: boolean;
-  placeholder?: string;
+  placeholder?: label;
   cor?: textFieldColor;
   tamanhoInput?: string;
   identificador?: string;
   sizeLabel?: inputLabel;
   sizeInput?: inputSize;
+  error?: boolean;
+  required?: boolean;
 }
 
-export default function InputSenha(props: State) {
+export const InputSenha: React.FC<State> = ({
+  password,
+  showPassword,
+  placeholder,
+  cor,
+  tamanhoInput,
+  identificador,
+  sizeInput,
+  sizeLabel,
+  error,
+  required,
+}) => {
   const [values, setValues] = React.useState<State>({
     password: "",
     showPassword: false,
@@ -86,20 +113,19 @@ export default function InputSenha(props: State) {
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
       <div>
-        <FormControl
-          sx={{ m: 1, width: props.tamanhoInput }}
-          variant="outlined"
-        >
+        <FormControl sx={{ m: 1, width: tamanhoInput }} variant="outlined">
           <InputLabel
+            // error
             htmlFor="outlined-adornment-password"
-            size={props.sizeLabel}
+            size={sizeLabel}
           >
-            {props.placeholder}
+            {placeholder}
           </InputLabel>
           <OutlinedInput
-            size={props.sizeInput}
-            color={props.cor}
-            id={props.identificador}
+            error={error}
+            size={sizeInput}
+            color={cor}
+            id={identificador}
             type={values.showPassword ? "text" : "password"}
             value={values.password}
             onChange={handleChange("password")}
@@ -115,10 +141,12 @@ export default function InputSenha(props: State) {
                 </IconButton>
               </InputAdornment>
             }
-            label={props.placeholder}
+            label={placeholder}
           />
         </FormControl>
       </div>
     </Box>
   );
-}
+};
+
+export default InputSenha;

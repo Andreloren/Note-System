@@ -1,18 +1,25 @@
 import * as React from "react";
 import { Box, Paper } from "@mui/material";
-import { Logo } from "../shared/components/logo/Logo";
-import { Heading } from "../shared/components/heading/Heading";
+import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+
+import { Logo } from "../../shared/components/logo/Logo";
+import { Heading } from "../../shared/components/heading/Heading";
 import {
   boxStyledLog,
   paperStyledLog,
   formBoxStyledLog,
-} from "../shared/components/login/LoginStyled";
-import InputSenha, { Input } from "../shared/components/inputs/Input";
-import { Label } from "../shared/components/label/Label";
-import { Button } from "../shared/components/button/Button";
-import { buttonStyled } from "../shared/components/button/ButtonStyled";
-import { Link } from "../shared/components/footer/Footer";
-import { FooterStyled } from "../shared/components/footer/FooterStyled";
+} from "../../shared/components/login/LoginStyled";
+import InputSenha, { Input } from "../../shared/components/inputs/Input";
+import { Label } from "../../shared/components/label/Label";
+import { Button } from "../../shared/components/button/Button";
+import { buttonStyled } from "../../shared/components/button/ButtonStyled";
+import { Link } from "../../shared/components/footer/Footer";
+import { FooterStyled } from "../../shared/components/footer/FooterStyled";
+
+export interface UserLog {
+  cpf: string;
+  senha: string;
+}
 
 export const Login: React.FC = () => {
   return (
@@ -31,7 +38,7 @@ export const Login: React.FC = () => {
             size="medium"
             placeholder="CPF"
             valor=""
-            textoajuda=""
+            textoAjuda=""
             cor="primary"
             tamanhoInput="40ch"
             identificador="outlined-size-normal"
@@ -44,6 +51,7 @@ export const Login: React.FC = () => {
             identificador="outlined-adornment-password"
           />
           <Button
+            iconButton={<DoorBackOutlinedIcon />}
             sx={buttonStyled}
             texto="Entrar na Plataforma"
             tipoBotao="button"

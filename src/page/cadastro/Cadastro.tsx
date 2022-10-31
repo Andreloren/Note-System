@@ -1,20 +1,44 @@
 import * as React from "react";
 import { Box, Paper } from "@mui/material";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import { useNavigate } from "react-router-dom";
 
-import { Heading } from "../shared/components/heading/Heading";
-import { boxStyledLog as boxStyledCad } from "../shared/components/login/LoginStyled";
+import { Heading } from "../../shared/components/heading/Heading";
+import { boxStyledLog as boxStyledCad } from "../../shared/components/login/LoginStyled";
 import {
   formBoxStyledCad,
   paperStyledCad,
-} from "../shared/components/cadastro/CadastroStyled";
-import InputSenha, { Input } from "../shared/components/inputs/Input";
-import { Label } from "../shared/components/label/Label";
-import { Button } from "../shared/components/button/Button";
-import { buttonStyled } from "../shared/components/button/ButtonStyled";
-import { Link } from "../shared/components/footer/Footer";
-import { FooterStyled } from "../shared/components/footer/FooterStyled";
+} from "../../shared/components/cadastro/CadastroStyled";
+import InputSenha, { Input } from "../../shared/components/inputs/Input";
+import { Label } from "../../shared/components/label/Label";
+import { Button } from "../../shared/components/button/Button";
+import { buttonStyled } from "../../shared/components/button/ButtonStyled";
+import { Link } from "../../shared/components/footer/Footer";
+import { FooterStyled } from "../../shared/components/footer/FooterStyled";
+import { UserLog } from "../login/Login";
+
+export interface Users extends UserLog {
+  nome: string;
+  email: string;
+  recados: [];
+}
 
 export const Cadastro: React.FC = () => {
+  const [nome, setNome] = React.useState("");
+  const [cpf, setCpf] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+  const [repsenha, setRepsenha] = React.useState("");
+  const [dados, setDados] = React.useState<Users[]>(
+    JSON.parse(localStorage.getItem("Users") ?? "[]")
+  );
+  const navigate = useNavigate();
+
+  // const handleChange = (value: string, key: placeholder) => {
+  //   switch (key) {
+  //   }
+  // };
+
   return (
     <Box sx={boxStyledCad}>
       <Paper elevation={3} sx={paperStyledCad}>
@@ -26,33 +50,39 @@ export const Cadastro: React.FC = () => {
         <Box sx={formBoxStyledCad}>
           <Label htmlFor="nome" texto="Nome Completo"></Label>
           <Input
+            error={false}
             size="small"
             placeholder="Nome"
             valor=""
-            textoajuda=""
+            textoAjuda=""
             cor="primary"
             tamanhoInput="40ch"
             identificador="outlined-size-small"
+            onChange={(e) => setNome(e.target.value)}
           />
           <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
           <Input
+            error={false}
             size="small"
             placeholder="CPF"
             valor=""
-            textoajuda=""
+            textoAjuda=""
             cor="primary"
             tamanhoInput="40ch"
             identificador="outlined-size-normal"
+            onChange={(e) => setCpf(e.target.value)}
           />
           <Label htmlFor="email" texto="Digite seu E-mail"></Label>
           <Input
+            error={false}
             size="small"
             placeholder="E-mail"
             valor=""
-            textoajuda=""
+            textoAjuda=""
             cor="primary"
             tamanhoInput="40ch"
             identificador="outlined-size-normal"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Label htmlFor="senha" texto="Digite sua senha"></Label>
           <InputSenha
@@ -73,12 +103,16 @@ export const Cadastro: React.FC = () => {
             identificador="outlined-adornment-password"
           />
           <Button
+            iconButton={<HowToRegOutlinedIcon />}
             sx={buttonStyled}
             texto="Cadastrar Usuário"
-            tipoBotao="submit"
+            tipoBotao="button"
             cor="primary"
             tamanho="medium"
             variacao="contained"
+            myOnClick={() => {
+              console.log("clicou");
+            }}
           ></Button>
           <Link
             sx={FooterStyled}

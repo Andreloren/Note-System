@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button as ButtonLog, Stack, SxProps } from "@mui/material";
-import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+
 import {
   buttonColor,
   buttonSize,
@@ -16,21 +16,34 @@ interface ButtonProps {
   tamanho: buttonSize;
   children?: React.ReactNode;
   sx?: SxProps;
+  iconButton: React.ReactNode;
+  myOnClick: () => void;
 }
 
-export function Button(props: ButtonProps) {
+export const Button: React.FC<ButtonProps> = ({
+  variacao,
+  tipoBotao,
+  texto,
+  cor,
+  tamanho,
+  children,
+  sx,
+  iconButton,
+  myOnClick,
+}) => {
   return (
     <Stack direction="row" spacing={2}>
       <ButtonLog
-        sx={props.sx}
-        type={props.tipoBotao}
-        variant={props.variacao}
-        startIcon={<DoorBackOutlinedIcon />}
-        color={props.cor}
-        size={props.tamanho}
+        sx={sx}
+        type={tipoBotao}
+        variant={variacao}
+        startIcon={iconButton}
+        color={cor}
+        size={tamanho}
+        onClick={myOnClick}
       >
-        {props.texto}
+        {texto}
       </ButtonLog>
     </Stack>
   );
-}
+};

@@ -10,7 +10,7 @@ import { ThemeStyle } from "../themes/ThemeStyled";
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
-export function MyButton() {
+export const MyButton: React.FC = () => {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   return (
@@ -28,9 +28,9 @@ export function MyButton() {
       </Button>
     </ThemeStyle>
   );
-}
+};
 
-export default function ToggleColorMode() {
+const ToggleColorMode: React.FC = () => {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
   const colorMode = React.useMemo(
     () => ({
@@ -60,4 +60,6 @@ export default function ToggleColorMode() {
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
-}
+};
+
+export default ToggleColorMode;

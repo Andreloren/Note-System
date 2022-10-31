@@ -53,3 +53,10 @@ export type buttonType = "submit" | "button" | "reset";
 export type buttonSize = "small" | "medium" | "large" | undefined;
 
 export type linkStyle = "none" | "always" | "hover" | undefined;
+
+export type label =
+  | "Senha"
+  | "E-mail"
+  | "Nome"
+  | "CPF"
+  | "Confirmação de Senha";

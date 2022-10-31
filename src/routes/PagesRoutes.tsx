@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login } from "../page/Login";
-import { Cadastro } from "../page/Cadastro";
+import { Login } from "../page/login/Login";
+import { Cadastro } from "../page/cadastro/Cadastro";
 
 const PagesRoutes: React.FC = () => {
   return (
