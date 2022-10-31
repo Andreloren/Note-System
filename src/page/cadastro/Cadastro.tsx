@@ -2,6 +2,7 @@ import * as React from "react";
 import { Box, Paper } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import { Heading } from "../../shared/components/heading/Heading";
 import { boxStyledLog as boxStyledCad } from "../../shared/components/login/LoginStyled";
@@ -24,12 +25,20 @@ export interface Users extends UserLog {
 }
 
 export const Cadastro: React.FC = () => {
-  const [nome, setNome] = React.useState("");
-  const [cpf, setCpf] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [senha, setSenha] = React.useState("");
-  const [repsenha, setRepsenha] = React.useState("");
-  const [dados, setDados] = React.useState<Users[]>(
+  const [nome, setNome] = useState("");
+  const [nomeValido, setNomeValido] = useState(false);
+
+  const [cpf, setCpf] = useState("");
+  const [cpfValido, setcpfValido] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [emailValido, setEmailValido] = useState(false);
+
+  const [senha, setSenha] = useState("");
+  const [repsenha, setRepsenha] = useState("");
+  const [senhaValido, setSenhaValido] = useState(false);
+
+  const [dados, setDados] = useState<Users[]>(
     JSON.parse(localStorage.getItem("Users") ?? "[]")
   );
   const navigate = useNavigate();
@@ -50,57 +59,69 @@ export const Cadastro: React.FC = () => {
         <Box sx={formBoxStyledCad}>
           <Label htmlFor="nome" texto="Nome Completo"></Label>
           <Input
+            obrigatorio={true}
             error={false}
             size="small"
             placeholder="Nome"
-            valor=""
+            valor={nome}
             textoAjuda=""
             cor="primary"
+            tipo="text"
             tamanhoInput="40ch"
             identificador="outlined-size-small"
-            onChange={(e) => setNome(e.target.value)}
+            meuOnChange={(e) => setNome(e.target.value)}
           />
           <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
           <Input
+            obrigatorio={true}
             error={false}
             size="small"
             placeholder="CPF"
-            valor=""
+            valor={cpf}
             textoAjuda=""
             cor="primary"
+            tipo="text"
             tamanhoInput="40ch"
             identificador="outlined-size-normal"
-            onChange={(e) => setCpf(e.target.value)}
+            meuOnChange={(e) => setCpf(e.target.value)}
           />
           <Label htmlFor="email" texto="Digite seu E-mail"></Label>
           <Input
+            obrigatorio={true}
             error={false}
             size="small"
             placeholder="E-mail"
-            valor=""
+            valor={email}
             textoAjuda=""
             cor="primary"
+            tipo="email"
             tamanhoInput="40ch"
             identificador="outlined-size-normal"
-            onChange={(e) => setEmail(e.target.value)}
+            meuOnChange={(e) => setEmail(e.target.value)}
           />
           <Label htmlFor="senha" texto="Digite sua senha"></Label>
           <InputSenha
+            obrigatorio={true}
             sizeInput="small"
+            valor={senha}
             sizeLabel="small"
             cor="primary"
             placeholder="Senha"
             tamanhoInput="40ch"
             identificador="outlined-adornment-password"
+            meuOnChange={(e) => setSenha(e.target.value)}
           />
           <Label htmlFor="repSenha" texto="Confirme sua senha"></Label>
           <InputSenha
+            obrigatorio={true}
             sizeInput="small"
             sizeLabel="small"
             cor="primary"
+            valor={repsenha}
             placeholder="Confirmação de Senha"
             tamanhoInput="40ch"
             identificador="outlined-adornment-password"
+            meuOnChange={(e) => setRepsenha(e.target.value)}
           />
           <Button
             iconButton={<HowToRegOutlinedIcon />}

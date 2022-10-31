@@ -21,8 +21,10 @@ interface InputProps {
   tamanhoInput: string;
   identificador: string;
   size: inputSize;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  meuOnChange?: React.ChangeEventHandler<HTMLInputElement>;
   error?: boolean;
+  obrigatorio?: boolean;
+  tipo: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -33,8 +35,10 @@ export const Input: React.FC<InputProps> = ({
   tamanhoInput,
   identificador,
   size,
-  onChange,
+  meuOnChange,
   error,
+  tipo,
+  obrigatorio,
 }) => {
   return (
     <Box
@@ -48,13 +52,15 @@ export const Input: React.FC<InputProps> = ({
       <div>
         <TextField
           error={error}
-          onChange={onChange}
+          onChange={meuOnChange}
           size={size}
           helperText={textoAjuda}
           label={placeholder}
           id={identificador}
-          defaultValue={valor}
+          value={valor}
           color={cor}
+          type={tipo}
+          required={obrigatorio}
         />
       </div>
     </Box>
@@ -64,7 +70,7 @@ export const Input: React.FC<InputProps> = ({
 //INPUT SENHA
 interface State {
   password?: string;
-  showPassword?: boolean;
+  mostrarSenha?: boolean;
   placeholder?: label;
   cor?: textFieldColor;
   tamanhoInput?: string;
@@ -72,12 +78,12 @@ interface State {
   sizeLabel?: inputLabel;
   sizeInput?: inputSize;
   error?: boolean;
-  required?: boolean;
+  meuOnChange?: React.ChangeEventHandler<HTMLInputElement>;
+  valor?: string;
+  obrigatorio?: boolean;
 }
 
 export const InputSenha: React.FC<State> = ({
-  password,
-  showPassword,
   placeholder,
   cor,
   tamanhoInput,
@@ -85,22 +91,21 @@ export const InputSenha: React.FC<State> = ({
   sizeInput,
   sizeLabel,
   error,
-  required,
+  meuOnChange,
+  valor,
+  obrigatorio,
 }) => {
-  const [values, setValues] = React.useState<State>({
-    password: "",
-    showPassword: false,
-  });
+  const [values, setValues] = React.useState<State>({ mostrarSenha: false });
 
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  // const handleChange =
+  //   (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     setValues({ ...values, [prop]: event.target.value });
+  //   };
 
   const handleClickShowPassword = () => {
     setValues({
       ...values,
-      showPassword: !values.showPassword,
+      mostrarSenha: !values.mostrarSenha,
     });
   };
 
@@ -115,20 +120,23 @@ export const InputSenha: React.FC<State> = ({
       <div>
         <FormControl sx={{ m: 1, width: tamanhoInput }} variant="outlined">
           <InputLabel
-            // error
+            required={obrigatorio}
+            error={error}
             htmlFor="outlined-adornment-password"
             size={sizeLabel}
           >
             {placeholder}
           </InputLabel>
           <OutlinedInput
+            required={obrigatorio}
             error={error}
             size={sizeInput}
             color={cor}
             id={identificador}
-            type={values.showPassword ? "text" : "password"}
-            value={values.password}
-            onChange={handleChange("password")}
+            type={values.mostrarSenha ? "text" : "password"}
+            value={valor}
+            onChange={meuOnChange}
+            // onChange={handleChange("password")}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -137,7 +145,7 @@ export const InputSenha: React.FC<State> = ({
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {values.mostrarSenha ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }

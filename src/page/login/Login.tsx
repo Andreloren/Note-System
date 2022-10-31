@@ -35,9 +35,13 @@ export const Login: React.FC = () => {
         <Box sx={formBoxStyledLog}>
           <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
           <Input
+            obrigatorio={true}
+            error={false}
+            // valor={cpf}
+            tipo="text"
+            // meuOnChange={(e) => setCpf(e.target.value)}
             size="medium"
             placeholder="CPF"
-            valor=""
             textoAjuda=""
             cor="primary"
             tamanhoInput="40ch"
@@ -45,6 +49,9 @@ export const Login: React.FC = () => {
           />
           <Label htmlFor="senha" texto="Digite sua senha"></Label>
           <InputSenha
+            obrigatorio={true}
+            // valor={senha}
+            // meuOnChange={(e) => setSenha(e.target.value)}
             cor="primary"
             placeholder="Senha"
             tamanhoInput="40ch"
@@ -58,6 +65,9 @@ export const Login: React.FC = () => {
             cor="primary"
             tamanho="medium"
             variacao="contained"
+            myOnClick={() => {
+              console.log("clicou");
+            }}
           ></Button>
           <Link
             sx={FooterStyled}
