@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, InputHTMLAttributes, SetStateAction } from "react";
 import {
   Box,
   IconButton,
@@ -9,22 +9,24 @@ import {
   TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
 import { inputLabel, inputSize, label, textFieldColor } from "../tipos/Tipos";
 
 //INPUT EMAIL
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: label;
   valor?: string;
-  textoAjuda?: string;
+  textoAjuda?: React.ReactNode;
   cor: textFieldColor;
-  tamanhoInput: string;
+  comprimentoInput: string;
   identificador: string;
-  size: inputSize;
-  meuOnChange?: React.ChangeEventHandler<HTMLInputElement>;
+  meuOnChange: (value: string, key: label) => void;
   error?: boolean;
   obrigatorio?: boolean;
-  tipo: string;
+  tipo?: string;
+  alturaInput?: inputSize;
+  sizeLabel?: inputLabel;
+  sizeInput?: inputSize;
+  digitacaoMaxima: object;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -32,28 +34,33 @@ export const Input: React.FC<InputProps> = ({
   valor,
   textoAjuda,
   cor,
-  tamanhoInput,
+  comprimentoInput,
   identificador,
-  size,
+  alturaInput,
   meuOnChange,
   error,
   tipo,
   obrigatorio,
+  sizeInput,
+  sizeLabel,
+  digitacaoMaxima,
+  ...props
 }) => {
   return (
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: tamanhoInput },
+        "& .MuiTextField-root": { m: 1, width: comprimentoInput },
       }}
       noValidate
       autoComplete="off"
     >
       <div>
         <TextField
+          {...props}
           error={error}
-          onChange={meuOnChange}
-          size={size}
+          onChange={(ev) => meuOnChange(ev.target.value, placeholder)}
+          size={alturaInput}
           helperText={textoAjuda}
           label={placeholder}
           id={identificador}
@@ -61,6 +68,7 @@ export const Input: React.FC<InputProps> = ({
           color={cor}
           type={tipo}
           required={obrigatorio}
+          inputProps={digitacaoMaxima}
         />
       </div>
     </Box>
@@ -71,22 +79,12 @@ export const Input: React.FC<InputProps> = ({
 interface State {
   password?: string;
   mostrarSenha?: boolean;
-  placeholder?: label;
-  cor?: textFieldColor;
-  tamanhoInput?: string;
-  identificador?: string;
-  sizeLabel?: inputLabel;
-  sizeInput?: inputSize;
-  error?: boolean;
-  meuOnChange?: React.ChangeEventHandler<HTMLInputElement>;
-  valor?: string;
-  obrigatorio?: boolean;
 }
 
-export const InputSenha: React.FC<State> = ({
+export const InputSenha: React.FC<InputProps> = ({
   placeholder,
   cor,
-  tamanhoInput,
+  comprimentoInput,
   identificador,
   sizeInput,
   sizeLabel,
@@ -95,12 +93,7 @@ export const InputSenha: React.FC<State> = ({
   valor,
   obrigatorio,
 }) => {
-  const [values, setValues] = React.useState<State>({ mostrarSenha: false });
-
-  // const handleChange =
-  //   (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     setValues({ ...values, [prop]: event.target.value });
-  //   };
+  const [values, setValues] = useState<State>({ mostrarSenha: false });
 
   const handleClickShowPassword = () => {
     setValues({
@@ -118,7 +111,7 @@ export const InputSenha: React.FC<State> = ({
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
       <div>
-        <FormControl sx={{ m: 1, width: tamanhoInput }} variant="outlined">
+        <FormControl sx={{ m: 1, width: comprimentoInput }} variant="outlined">
           <InputLabel
             required={obrigatorio}
             error={error}
@@ -135,8 +128,7 @@ export const InputSenha: React.FC<State> = ({
             id={identificador}
             type={values.mostrarSenha ? "text" : "password"}
             value={valor}
-            onChange={meuOnChange}
-            // onChange={handleChange("password")}
+            onChange={(ev) => meuOnChange(ev.target.value, placeholder)}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -156,5 +148,3 @@ export const InputSenha: React.FC<State> = ({
     </Box>
   );
 };
-
-export default InputSenha;

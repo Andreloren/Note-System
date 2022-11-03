@@ -22,9 +22,9 @@ export type inputLabelColor =
   | "secondary"
   | "success"
   | "warning"
-  | string;
+  | undefined;
 
-export type inputSize = "medium" | "small" | undefined;
+export type inputSize = "medium" | "small";
 export type inputLabel = "normal" | "small";
 
 export type textFieldColor =
@@ -60,3 +60,5 @@ export type label =
   | "Nome"
   | "CPF"
   | "Confirmação de Senha";
+
+export type mascara = string | (string | RegExp)[];

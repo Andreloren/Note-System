@@ -1,4 +1,6 @@
-import * as React from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Box, Paper } from "@mui/material";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 
@@ -9,12 +11,13 @@ import {
   paperStyledLog,
   formBoxStyledLog,
 } from "../../shared/components/login/LoginStyled";
-import InputSenha, { Input } from "../../shared/components/inputs/Input";
+import { InputSenha, Input } from "../../shared/components/inputs/Input";
 import { Label } from "../../shared/components/label/Label";
 import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
+import { label } from "../../shared/components/tipos/Tipos";
 
 export interface UserLog {
   cpf: string;
@@ -22,6 +25,29 @@ export interface UserLog {
 }
 
 export const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const [cpf, setCpf] = useState("");
+  const [senha, setSenha] = useState("");
+  const [usuarios, setUsuarios] = useState<UserLog[]>(
+    JSON.parse(localStorage.getItem("usuarios") ?? "[]")
+  );
+  const [usuarioLogado, setUsuarioLogado] = useState<UserLog | null>(null);
+
+  const handleChange = (value: string, key: label) => {
+    switch (key) {
+      case "CPF":
+        setCpf(value);
+        break;
+
+      case "Senha":
+        setSenha(value);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <Box sx={boxStyledLog}>
       <Paper elevation={3} sx={paperStyledLog}>
@@ -37,25 +63,28 @@ export const Login: React.FC = () => {
           <Input
             obrigatorio={true}
             error={false}
-            // valor={cpf}
+            valor={cpf}
             tipo="text"
-            // meuOnChange={(e) => setCpf(e.target.value)}
-            size="medium"
+            meuOnChange={handleChange}
+            alturaInput="medium"
             placeholder="CPF"
             textoAjuda=""
             cor="primary"
-            tamanhoInput="40ch"
+            comprimentoInput="40ch"
             identificador="outlined-size-normal"
+            digitacaoMaxima={{ maxLength: 11 }}
           />
           <Label htmlFor="senha" texto="Digite sua senha"></Label>
           <InputSenha
             obrigatorio={true}
-            // valor={senha}
-            // meuOnChange={(e) => setSenha(e.target.value)}
+            error={false}
+            valor={senha}
+            meuOnChange={handleChange}
             cor="primary"
             placeholder="Senha"
-            tamanhoInput="40ch"
+            comprimentoInput="40ch"
             identificador="outlined-adornment-password"
+            digitacaoMaxima={{ maxLength: 10 }}
           />
           <Button
             iconButton={<DoorBackOutlinedIcon />}

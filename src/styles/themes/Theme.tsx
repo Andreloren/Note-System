@@ -7,6 +7,8 @@ import { Button, CssBaseline } from "@mui/material";
 
 import PagesRoutes from "../../routes/PagesRoutes";
 import { ThemeStyle } from "../themes/ThemeStyled";
+import { Provider } from "react-redux";
+import { store } from "../../store/modules";
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -54,9 +56,11 @@ const ToggleColorMode: React.FC = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <MyButton />
-        <PagesRoutes />
+        <Provider store={store}>
+          <CssBaseline />
+          <MyButton />
+          <PagesRoutes />
+        </Provider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
