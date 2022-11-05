@@ -12,7 +12,6 @@ import {
   formBoxStyledLog,
 } from "../../shared/components/login/LoginStyled";
 import { InputSenha, Input } from "../../shared/components/inputs/Input";
-import { Label } from "../../shared/components/label/Label";
 import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
@@ -28,6 +27,12 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
+
+  const [mensagemCpf, setMensagemCpf] = useState("");
+  const [mensagemSenha, setMensagemSenha] = useState("");
+  const [senhaValido, setSenhaValido] = useState(false);
+  const [cpfValido, setcpfValido] = useState(false);
+
   const [usuarios, setUsuarios] = useState<UserLog[]>(
     JSON.parse(localStorage.getItem("usuarios") ?? "[]")
   );
@@ -35,11 +40,11 @@ export const Login: React.FC = () => {
 
   const handleChange = (value: string, key: label) => {
     switch (key) {
-      case "CPF":
+      case "Digite seu CPF":
         setCpf(value);
         break;
 
-      case "Senha":
+      case "Digite sua senha":
         setSenha(value);
         break;
 
@@ -47,6 +52,26 @@ export const Login: React.FC = () => {
         break;
     }
   };
+
+  // useEffect(() => {
+  //   if (!senha || senha.length < 7) {
+  //     setSenhaValido(false);
+  //     setMensagemSenha("Mínimo de 7 caracteres.");
+  //   } else {
+  //     setSenhaValido(true);
+  //     setMensagemSenha("");
+  //   }
+  // }, [senha]);
+
+  // useEffect(() => {
+  //   if (!cpf || !cpf.match(regexCpf)) {
+  //     setcpfValido(false);
+  //     setMensagemCpf("Mínimo de 5 caracteres.");
+  //   } else {
+  //     setcpfValido(true);
+  //     setMensagemCpf("");
+  //   }
+  // }, [cpf]);
 
   return (
     <Box sx={boxStyledLog}>
@@ -59,32 +84,31 @@ export const Login: React.FC = () => {
           sx={{ mx: 3, mt: 1 }}
         />
         <Box sx={formBoxStyledLog}>
-          <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
           <Input
             obrigatorio={true}
-            error={false}
+            error={!cpfValido}
             valor={cpf}
             tipo="text"
             meuOnChange={handleChange}
             alturaInput="medium"
-            placeholder="CPF"
-            textoAjuda=""
+            placeholder="Digite seu CPF"
+            textoAjuda={mensagemCpf}
             cor="primary"
             comprimentoInput="40ch"
             identificador="outlined-size-normal"
             digitacaoMaxima={{ maxLength: 11 }}
           />
-          <Label htmlFor="senha" texto="Digite sua senha"></Label>
           <InputSenha
             obrigatorio={true}
-            error={false}
+            error={!senhaValido}
             valor={senha}
             meuOnChange={handleChange}
             cor="primary"
-            placeholder="Senha"
+            placeholder="Digite sua senha"
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
             digitacaoMaxima={{ maxLength: 10 }}
+            texto={mensagemSenha}
           />
           <Button
             iconButton={<DoorBackOutlinedIcon />}

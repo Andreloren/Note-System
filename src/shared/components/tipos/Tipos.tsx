@@ -55,10 +55,10 @@ export type buttonSize = "small" | "medium" | "large" | undefined;
 export type linkStyle = "none" | "always" | "hover" | undefined;
 
 export type label =
-  | "Senha"
-  | "E-mail"
-  | "Nome"
-  | "CPF"
+  | "Digite sua senha"
+  | "Digite seu E-mail"
+  | "Nome Completo"
+  | "Digite seu CPF"
   | "Confirmação de Senha";
 
 export type mascara = string | (string | RegExp)[];

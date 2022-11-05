@@ -37,12 +37,15 @@ export const Cadastro: React.FC = () => {
   const [emailValido, setEmailValido] = useState(false);
 
   const [senha, setSenha] = useState("");
-  const [repsenha, setRepSenha] = useState("");
+  const [repSenha, setRepSenha] = useState("");
   const [senhaValido, setSenhaValido] = useState(false);
+  const [senhaRepValido, setSenhaRepValido] = useState(false);
 
-  const [mensagemNome, setMensagemNome] = useState("Mínimo de 5 letras");
-  const [mensagemCpf, setMensagemCpf] = useState("Mínimo de 5 letras");
-  const [mensagemEmail, setMensagemEmail] = useState("Mínimo de 5 letras");
+  const [mensagemNome, setMensagemNome] = useState("");
+  const [mensagemCpf, setMensagemCpf] = useState("");
+  const [mensagemEmail, setMensagemEmail] = useState("");
+  const [mensagemSenha, setMensagemSenha] = useState("");
+  const [mensagemRepSenha, setMensagemRepSenha] = useState("");
 
   const navigate = useNavigate();
 
@@ -80,21 +83,41 @@ export const Cadastro: React.FC = () => {
     }
   }, [email]);
 
+  useEffect(() => {
+    if (!senha || senha.length < 7) {
+      setSenhaValido(false);
+      setMensagemSenha("Mínimo de 7 caracteres.");
+    } else {
+      setSenhaValido(true);
+      setMensagemSenha("");
+    }
+  }, [senha]);
+
+  useEffect(() => {
+    if (senha !== repSenha) {
+      setSenhaRepValido(false);
+      setMensagemRepSenha("Senhas não conferem");
+    } else {
+      setSenhaRepValido(true);
+      setMensagemRepSenha("");
+    }
+  }, [repSenha]);
+
   const handleChange = (value: string, key: label) => {
     switch (key) {
-      case "Nome":
+      case "Nome Completo":
         setNome(value);
         break;
 
-      case "CPF":
+      case "Digite seu CPF":
         setCpf(value);
         break;
 
-      case "E-mail":
+      case "Digite seu E-mail":
         setEmail(value);
         break;
 
-      case "Senha":
+      case "Digite sua senha":
         setSenha(value);
         break;
 
@@ -116,12 +139,11 @@ export const Cadastro: React.FC = () => {
           sx={{ mx: 3, mt: 1 }}
         />
         <Box sx={formBoxStyledCad}>
-          <Label htmlFor="nome" texto="Nome Completo"></Label>
           <Input
             obrigatorio={true}
             error={!nomeValido}
             alturaInput="small"
-            placeholder="Nome"
+            placeholder="Nome Completo"
             valor={nome}
             textoAjuda={mensagemNome}
             cor="primary"
@@ -131,12 +153,12 @@ export const Cadastro: React.FC = () => {
             meuOnChange={handleChange}
             digitacaoMaxima={{ maxLength: 35 }}
           />
-          <Label htmlFor="cpf" texto="Digite seu CPF"></Label>
+
           <Input
             obrigatorio={true}
             error={!cpfValido}
             alturaInput="small"
-            placeholder="CPF"
+            placeholder="Digite seu CPF"
             valor={cpf}
             textoAjuda={mensagemCpf}
             cor="primary"
@@ -146,12 +168,12 @@ export const Cadastro: React.FC = () => {
             meuOnChange={handleChange}
             digitacaoMaxima={{ maxLength: 11 }}
           />
-          <Label htmlFor="email" texto="Digite seu E-mail"></Label>
+
           <Input
             obrigatorio={true}
             error={!emailValido}
             alturaInput="small"
-            placeholder="E-mail"
+            placeholder="Digite seu E-mail"
             valor={email}
             textoAjuda={mensagemEmail}
             cor="primary"
@@ -161,31 +183,35 @@ export const Cadastro: React.FC = () => {
             meuOnChange={handleChange}
             digitacaoMaxima={{ maxLength: 33 }}
           />
-          <Label htmlFor="senha" texto="Digite sua senha"></Label>
+
           <InputSenha
             obrigatorio={true}
             sizeInput="small"
             valor={senha}
             sizeLabel="small"
             cor="primary"
-            placeholder="Senha"
+            placeholder="Digite sua senha"
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
             meuOnChange={handleChange}
             digitacaoMaxima={{ maxLength: 10 }}
+            error={!senhaValido}
+            texto={mensagemSenha}
           />
-          <Label htmlFor="repSenha" texto="Confirme sua senha"></Label>
+
           <InputSenha
             obrigatorio={true}
             sizeInput="small"
             sizeLabel="small"
             cor="primary"
-            valor={repsenha}
+            valor={repSenha}
             placeholder="Confirmação de Senha"
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
             meuOnChange={handleChange}
             digitacaoMaxima={{ maxLength: 10 }}
+            error={!senhaRepValido}
+            texto={mensagemRepSenha}
           />
           <Button
             iconButton={<HowToRegOutlinedIcon />}

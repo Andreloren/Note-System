@@ -7,6 +7,7 @@ import {
   FormControl,
   InputAdornment,
   TextField,
+  FormHelperText,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { inputLabel, inputSize, label, textFieldColor } from "../tipos/Tipos";
@@ -27,6 +28,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   sizeLabel?: inputLabel;
   sizeInput?: inputSize;
   digitacaoMaxima: object;
+  texto?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -44,6 +46,7 @@ export const Input: React.FC<InputProps> = ({
   sizeInput,
   sizeLabel,
   digitacaoMaxima,
+  texto,
   ...props
 }) => {
   return (
@@ -92,6 +95,8 @@ export const InputSenha: React.FC<InputProps> = ({
   meuOnChange,
   valor,
   obrigatorio,
+  digitacaoMaxima,
+  texto,
 }) => {
   const [values, setValues] = useState<State>({ mostrarSenha: false });
 
@@ -126,6 +131,7 @@ export const InputSenha: React.FC<InputProps> = ({
             size={sizeInput}
             color={cor}
             id={identificador}
+            inputProps={digitacaoMaxima}
             type={values.mostrarSenha ? "text" : "password"}
             value={valor}
             onChange={(ev) => meuOnChange(ev.target.value, placeholder)}
@@ -143,6 +149,7 @@ export const InputSenha: React.FC<InputProps> = ({
             }
             label={placeholder}
           />
+          <FormHelperText error={error}>{texto}</FormHelperText>
         </FormControl>
       </div>
     </Box>
