@@ -14,10 +14,10 @@ interface ButtonProps {
   texto: string;
   cor: buttonColor;
   tamanho: buttonSize;
-  children?: React.ReactNode;
   sx?: SxProps;
   iconButton: React.ReactNode;
   myOnClick: () => void;
+  desabilitado?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -26,10 +26,10 @@ export const Button: React.FC<ButtonProps> = ({
   texto,
   cor,
   tamanho,
-  children,
   sx,
   iconButton,
   myOnClick,
+  desabilitado,
 }) => {
   return (
     <Stack direction="row" spacing={2}>
@@ -41,6 +41,7 @@ export const Button: React.FC<ButtonProps> = ({
         color={cor}
         size={tamanho}
         onClick={myOnClick}
+        disabled={desabilitado}
       >
         {texto}
       </ButtonLog>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import MaskedInput from "react-text-mask";
 import { Box, Paper } from "@mui/material";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 
@@ -17,6 +17,7 @@ import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
 import { label } from "../../shared/components/tipos/Tipos";
+import { MaskCpf, regexCpf } from "../../shared/components/mascara/Mask";
 
 export interface UserLog {
   cpf: string;
@@ -54,6 +55,13 @@ export const Login: React.FC = () => {
   };
 
   // useEffect(() => {
+  //   if (!cpf || !cpf.match(regexCpf)) {
+  //     setcpfValido(false);
+  //     setMensagemCpf("Favor digitar 11 números.");
+  //   } else {
+  //     setcpfValido(true);
+  //     setMensagemCpf("");
+  //   }
   //   if (!senha || senha.length < 7) {
   //     setSenhaValido(false);
   //     setMensagemSenha("Mínimo de 7 caracteres.");
@@ -61,17 +69,7 @@ export const Login: React.FC = () => {
   //     setSenhaValido(true);
   //     setMensagemSenha("");
   //   }
-  // }, [senha]);
-
-  // useEffect(() => {
-  //   if (!cpf || !cpf.match(regexCpf)) {
-  //     setcpfValido(false);
-  //     setMensagemCpf("Mínimo de 5 caracteres.");
-  //   } else {
-  //     setcpfValido(true);
-  //     setMensagemCpf("");
-  //   }
-  // }, [cpf]);
+  // }, [cpf, senha]);
 
   return (
     <Box sx={boxStyledLog}>
@@ -96,7 +94,10 @@ export const Login: React.FC = () => {
             cor="primary"
             comprimentoInput="40ch"
             identificador="outlined-size-normal"
-            digitacaoMaxima={{ maxLength: 11 }}
+            propsInput={{
+              inputComponent: MaskCpf,
+              inputProps: { component: MaskedInput },
+            }}
           />
           <InputSenha
             obrigatorio={true}
@@ -107,7 +108,7 @@ export const Login: React.FC = () => {
             placeholder="Digite sua senha"
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
-            digitacaoMaxima={{ maxLength: 10 }}
+            propsInput={{ maxLength: 10 }}
             texto={mensagemSenha}
           />
           <Button

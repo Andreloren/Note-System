@@ -27,7 +27,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   alturaInput?: inputSize;
   sizeLabel?: inputLabel;
   sizeInput?: inputSize;
-  digitacaoMaxima: object;
+  propsInput: object;
   texto?: string;
 }
 
@@ -45,7 +45,7 @@ export const Input: React.FC<InputProps> = ({
   obrigatorio,
   sizeInput,
   sizeLabel,
-  digitacaoMaxima,
+  propsInput,
   texto,
   ...props
 }) => {
@@ -71,7 +71,7 @@ export const Input: React.FC<InputProps> = ({
           color={cor}
           type={tipo}
           required={obrigatorio}
-          inputProps={digitacaoMaxima}
+          InputProps={propsInput}
         />
       </div>
     </Box>
@@ -95,7 +95,7 @@ export const InputSenha: React.FC<InputProps> = ({
   meuOnChange,
   valor,
   obrigatorio,
-  digitacaoMaxima,
+  propsInput,
   texto,
 }) => {
   const [values, setValues] = useState<State>({ mostrarSenha: false });
@@ -131,7 +131,7 @@ export const InputSenha: React.FC<InputProps> = ({
             size={sizeInput}
             color={cor}
             id={identificador}
-            inputProps={digitacaoMaxima}
+            inputProps={propsInput}
             type={values.mostrarSenha ? "text" : "password"}
             value={valor}
             onChange={(ev) => meuOnChange(ev.target.value, placeholder)}

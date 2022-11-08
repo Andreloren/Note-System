@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Box, Paper } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useNavigate } from "react-router-dom";
+import MaskedInput from "react-text-mask";
+
 import { Heading } from "../../shared/components/heading/Heading";
 import { boxStyledLog as boxStyledCad } from "../../shared/components/login/LoginStyled";
 import {
@@ -9,16 +11,18 @@ import {
   paperStyledCad,
 } from "../../shared/components/cadastro/CadastroStyled";
 import { InputSenha, Input } from "../../shared/components/inputs/Input";
-import { Label } from "../../shared/components/label/Label";
 import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
 import { UserLog } from "../login/Login";
 import { label } from "../../shared/components/tipos/Tipos";
-
-const regexCpf = /^[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}$/g;
-const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g;
+import {
+  MaskCpf,
+  MaskEmail,
+  regexCpf,
+  regexEmail,
+} from "../../shared/components/mascara/Mask";
 
 export interface Users extends UserLog {
   nome: string;
@@ -61,29 +65,20 @@ export const Cadastro: React.FC = () => {
       setNomeValido(true);
       setMensagemNome("");
     }
-  }, [nome]);
-
-  useEffect(() => {
     if (!cpf || !cpf.match(regexCpf)) {
       setcpfValido(false);
-      setMensagemCpf("Mínimo de 5 caracteres.");
+      setMensagemCpf("Favor digitar 11 números.");
     } else {
       setcpfValido(true);
       setMensagemCpf("");
     }
-  }, [cpf]);
-
-  useEffect(() => {
     if (!email || !email.match(regexEmail)) {
       setEmailValido(false);
-      setMensagemEmail("Mínimo de 5 caracteres.");
+      setMensagemEmail("Favor digitar um e-mail válido.");
     } else {
       setEmailValido(true);
       setMensagemEmail("");
     }
-  }, [email]);
-
-  useEffect(() => {
     if (!senha || senha.length < 7) {
       setSenhaValido(false);
       setMensagemSenha("Mínimo de 7 caracteres.");
@@ -91,22 +86,19 @@ export const Cadastro: React.FC = () => {
       setSenhaValido(true);
       setMensagemSenha("");
     }
-  }, [senha]);
-
-  useEffect(() => {
-    if (senha !== repSenha) {
+    if (senha !== repSenha || !repSenha) {
       setSenhaRepValido(false);
       setMensagemRepSenha("Senhas não conferem");
     } else {
       setSenhaRepValido(true);
       setMensagemRepSenha("");
     }
-  }, [repSenha]);
+  }, [senha, repSenha, email, cpf, nome]);
 
   const handleChange = (value: string, key: label) => {
     switch (key) {
       case "Nome Completo":
-        setNome(value);
+        setNome(value.toUpperCase());
         break;
 
       case "Digite seu CPF":
@@ -114,15 +106,17 @@ export const Cadastro: React.FC = () => {
         break;
 
       case "Digite seu E-mail":
-        setEmail(value);
+        setEmail(value.toLowerCase());
         break;
 
       case "Digite sua senha":
-        setSenha(value);
+        setSenha(value.toLowerCase());
         break;
 
       case "Confirmação de Senha":
-        setRepSenha(value);
+        setRepSenha(value.toLowerCase());
+        console.log(setRepSenha);
+
         break;
 
       default:
@@ -151,7 +145,7 @@ export const Cadastro: React.FC = () => {
             comprimentoInput="40ch"
             identificador="outlined-size-small"
             meuOnChange={handleChange}
-            digitacaoMaxima={{ maxLength: 35 }}
+            propsInput={{ maxLength: 35 }}
           />
 
           <Input
@@ -166,7 +160,10 @@ export const Cadastro: React.FC = () => {
             comprimentoInput="40ch"
             identificador="outlined-size-normal"
             meuOnChange={handleChange}
-            digitacaoMaxima={{ maxLength: 11 }}
+            propsInput={{
+              inputComponent: MaskCpf,
+              inputProps: { component: MaskedInput },
+            }}
           />
 
           <Input
@@ -177,11 +174,15 @@ export const Cadastro: React.FC = () => {
             valor={email}
             textoAjuda={mensagemEmail}
             cor="primary"
-            tipo="email"
+            tipo="text"
             comprimentoInput="40ch"
             identificador="outlined-size-normal"
             meuOnChange={handleChange}
-            digitacaoMaxima={{ maxLength: 33 }}
+            propsInput={{
+              inputComponent: MaskEmail,
+              inputProps: { component: MaskedInput },
+              maxLength: 30,
+            }}
           />
 
           <InputSenha
@@ -194,7 +195,7 @@ export const Cadastro: React.FC = () => {
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
             meuOnChange={handleChange}
-            digitacaoMaxima={{ maxLength: 10 }}
+            propsInput={{ maxLength: 10 }}
             error={!senhaValido}
             texto={mensagemSenha}
           />
@@ -209,7 +210,7 @@ export const Cadastro: React.FC = () => {
             comprimentoInput="40ch"
             identificador="outlined-adornment-password"
             meuOnChange={handleChange}
-            digitacaoMaxima={{ maxLength: 10 }}
+            propsInput={{ maxLength: 10 }}
             error={!senhaRepValido}
             texto={mensagemRepSenha}
           />
@@ -224,6 +225,13 @@ export const Cadastro: React.FC = () => {
             myOnClick={() => {
               console.log("clicou");
             }}
+            desabilitado={
+              !nomeValido ||
+              !cpfValido ||
+              !emailValido ||
+              !senhaValido ||
+              !senhaRepValido
+            }
           ></Button>
           <Link
             sx={FooterStyled}
