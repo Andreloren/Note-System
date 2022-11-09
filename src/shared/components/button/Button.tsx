@@ -16,7 +16,7 @@ interface ButtonProps {
   tamanho: buttonSize;
   sx?: SxProps;
   iconButton: React.ReactNode;
-  myOnClick: () => void;
+  myOnClick: React.MouseEventHandler<HTMLButtonElement>;
   desabilitado?: boolean;
 }
 

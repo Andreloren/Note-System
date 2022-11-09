@@ -6,15 +6,16 @@ export interface Recado {
   descricao: string;
   detalhamento: string;
 }
-
 export interface Usuario {
   nome: string;
+  cpf: string;
   email: string;
   senha: string;
   recados: Recado[];
 }
 const initialState: Usuario = {
   nome: "",
+  cpf: "",
   email: "",
   senha: "",
   recados: [],
@@ -35,3 +36,7 @@ const usuarioLogadoSlice = createSlice({
     },
   },
 });
+
+export const { limparUsuarioLogado, incluirUsuarioLogado, adicionarRecados } =
+  usuarioLogadoSlice.actions;
+export default usuarioLogadoSlice.reducer;

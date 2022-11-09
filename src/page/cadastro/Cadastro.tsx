@@ -15,20 +15,17 @@ import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
-import { UserLog } from "../login/Login";
 import { label } from "../../shared/components/tipos/Tipos";
+import type { Usuario } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
 import {
   MaskCpf,
   MaskEmail,
+  regexNome,
   regexCpf,
   regexEmail,
 } from "../../shared/components/mascara/Mask";
-
-export interface Users extends UserLog {
-  nome: string;
-  email: string;
-  recados: [];
-}
+import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
+import { adicionarUsuario } from "../../store/modules/usuarios/usuariosSlice";
 
 export const Cadastro: React.FC = () => {
   const [nome, setNome] = useState("");
@@ -53,14 +50,13 @@ export const Cadastro: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const [dados, setDados] = useState<Users[]>(
-    JSON.parse(localStorage.getItem("Users") ?? "[]")
-  );
+  const usuarios = useAppSelector((estado) => estado.usuarios);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!nome || nome.length < 5) {
+    if (!nome || !nome.match(regexNome)) {
       setNomeValido(false);
-      setMensagemNome("Mínimo de 5 caracteres.");
+      setMensagemNome("Digite no mínimo nome e sobrenome.");
     } else {
       setNomeValido(true);
       setMensagemNome("");
@@ -124,6 +120,36 @@ export const Cadastro: React.FC = () => {
     }
   };
 
+  const limparCampos = () => {
+    setNome("");
+    setCpf("");
+    setEmail("");
+    setSenha("");
+    setRepSenha("");
+  };
+
+  const handleClickCadastrar = () => {
+    const novoUsuario: Usuario = {
+      nome: nome,
+      cpf: cpf,
+      email: email,
+      senha: senha,
+      recados: [],
+    };
+
+    const usuarioExistente = usuarios.find(
+      (usuario) => usuario.cpf === novoUsuario.cpf
+    );
+
+    if (usuarioExistente) {
+      alert("Usuario Extistente");
+      return;
+    }
+
+    dispatch(adicionarUsuario(novoUsuario));
+    limparCampos();
+  };
+
   return (
     <Box sx={boxStyledCad}>
       <Paper elevation={3} sx={paperStyledCad}>
@@ -144,8 +170,8 @@ export const Cadastro: React.FC = () => {
             tipo="text"
             comprimentoInput="40ch"
             identificador="outlined-size-small"
+            propsInput={{ maxLength: 33 }}
             meuOnChange={handleChange}
-            propsInput={{ maxLength: 35 }}
           />
 
           <Input
@@ -222,9 +248,7 @@ export const Cadastro: React.FC = () => {
             cor="primary"
             tamanho="medium"
             variacao="contained"
-            myOnClick={() => {
-              console.log("clicou");
-            }}
+            myOnClick={handleClickCadastrar}
             desabilitado={
               !nomeValido ||
               !cpfValido ||

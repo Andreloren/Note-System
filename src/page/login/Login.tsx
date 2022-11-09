@@ -18,14 +18,15 @@ import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
 import { label } from "../../shared/components/tipos/Tipos";
 import { MaskCpf, regexCpf } from "../../shared/components/mascara/Mask";
+import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
+import { incluirUsuarioLogado } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
 
-export interface UserLog {
+interface UserLog {
   cpf: string;
   senha: string;
 }
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -34,10 +35,10 @@ export const Login: React.FC = () => {
   const [senhaValido, setSenhaValido] = useState(false);
   const [cpfValido, setcpfValido] = useState(false);
 
-  const [usuarios, setUsuarios] = useState<UserLog[]>(
-    JSON.parse(localStorage.getItem("usuarios") ?? "[]")
-  );
-  const [usuarioLogado, setUsuarioLogado] = useState<UserLog | null>(null);
+  const navigate = useNavigate();
+
+  const usuarios = useAppSelector((estado) => estado.usuarios);
+  const dispatch = useAppDispatch();
 
   const handleChange = (value: string, key: label) => {
     switch (key) {
@@ -54,22 +55,42 @@ export const Login: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (!cpf || !cpf.match(regexCpf)) {
-  //     setcpfValido(false);
-  //     setMensagemCpf("Favor digitar 11 números.");
-  //   } else {
-  //     setcpfValido(true);
-  //     setMensagemCpf("");
-  //   }
-  //   if (!senha || senha.length < 7) {
-  //     setSenhaValido(false);
-  //     setMensagemSenha("Mínimo de 7 caracteres.");
-  //   } else {
-  //     setSenhaValido(true);
-  //     setMensagemSenha("");
-  //   }
-  // }, [cpf, senha]);
+  useEffect(() => {
+    if (!cpf || !cpf.match(regexCpf)) {
+      setcpfValido(false);
+      setMensagemCpf("Favor digitar 11 números.");
+    } else {
+      setcpfValido(true);
+      setMensagemCpf("");
+    }
+    if (!senha || senha.length < 7) {
+      setSenhaValido(false);
+      setMensagemSenha("Mínimo de 7 caracteres.");
+    } else {
+      setSenhaValido(true);
+      setMensagemSenha("");
+    }
+  }, [cpf, senha]);
+
+  const handleClickLogin = () => {
+    const userLog: UserLog = {
+      cpf: cpf,
+      senha: senha,
+    };
+
+    const usuarioLogando = usuarios.find(
+      (usuarioLog) =>
+        usuarioLog.cpf === userLog.cpf && usuarioLog.senha === userLog.senha
+    );
+
+    if (!usuarioLogando) {
+      alert("CPF inexistente ou Senha incorreta");
+      return;
+    }
+
+    dispatch(incluirUsuarioLogado(usuarioLogando));
+    navigate("/home");
+  };
 
   return (
     <Box sx={boxStyledLog}>
@@ -119,9 +140,7 @@ export const Login: React.FC = () => {
             cor="primary"
             tamanho="medium"
             variacao="contained"
-            myOnClick={() => {
-              console.log("clicou");
-            }}
+            myOnClick={handleClickLogin}
           ></Button>
           <Link
             sx={FooterStyled}

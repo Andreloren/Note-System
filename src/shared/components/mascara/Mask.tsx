@@ -2,6 +2,8 @@ import React from "react";
 import MaskedInput from "react-text-mask";
 import emailMask from "text-mask-addons/dist/emailMask";
 
+const regexNome = /[A-Z][a-z]* [A-Z][a-z]*/;
+
 const regexCpf = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$/;
 
 const regexEmail =
@@ -34,6 +36,7 @@ const MaskCpf = (props: any) => {
     />
   );
 };
+
 const MaskEmail = (props: any) => {
   const { inputRef, ...other } = props;
 
@@ -48,4 +51,4 @@ const MaskEmail = (props: any) => {
   );
 };
 
-export { MaskCpf, MaskEmail, regexCpf, regexEmail };
+export { MaskCpf, MaskEmail, regexNome, regexCpf, regexEmail };
