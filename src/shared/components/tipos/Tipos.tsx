@@ -26,6 +26,7 @@ export type inputLabelColor =
 
 export type inputSize = "medium" | "small";
 export type inputLabel = "normal" | "small";
+export type inputVariant = "filled" | "outlined" | "standard";
 
 export type textFieldColor =
   | "primary"
@@ -46,7 +47,13 @@ export type buttonColor =
   | "warning"
   | undefined;
 
-export type buttonVariant = "contained" | "outlined" | "text" | undefined;
+export type buttonVariant =
+  | "filled"
+  | "outlined"
+  | "standard"
+  | "contained"
+  | "text"
+  | undefined;
 
 export type buttonType = "submit" | "button" | "reset";
 

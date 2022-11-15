@@ -11,7 +11,10 @@ import {
   paperStyledLog,
   formBoxStyledLog,
 } from "../../shared/components/login/LoginStyled";
-import { InputSenha, Input } from "../../shared/components/inputs/Input";
+import {
+  InputSenha,
+  InputCadastro,
+} from "../../shared/components/inputs/Input";
 import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
@@ -103,7 +106,7 @@ export const Login: React.FC = () => {
           sx={{ mx: 3, mt: 1 }}
         />
         <Box sx={formBoxStyledLog}>
-          <Input
+          <InputCadastro
             obrigatorio={true}
             error={!cpfValido}
             valor={cpf}

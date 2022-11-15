@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes, SetStateAction } from "react";
+import React, { useState, InputHTMLAttributes } from "react";
 import {
   Box,
   IconButton,
@@ -31,7 +31,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   texto?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
+export const InputCadastro: React.FC<InputProps> = ({
   placeholder,
   valor,
   textoAjuda,

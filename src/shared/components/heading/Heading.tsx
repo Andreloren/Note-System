@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Box, SxProps, Typography } from "@mui/material";
 import { textVariant } from "../tipos/Tipos";
 

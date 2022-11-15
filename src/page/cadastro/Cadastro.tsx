@@ -10,7 +10,10 @@ import {
   formBoxStyledCad,
   paperStyledCad,
 } from "../../shared/components/cadastro/CadastroStyled";
-import { InputSenha, Input } from "../../shared/components/inputs/Input";
+import {
+  InputSenha,
+  InputCadastro,
+} from "../../shared/components/inputs/Input";
 import { Button } from "../../shared/components/button/Button";
 import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
@@ -162,7 +165,7 @@ export const Cadastro: React.FC = () => {
           sx={{ mx: 3, mt: 1 }}
         />
         <Box sx={formBoxStyledCad}>
-          <Input
+          <InputCadastro
             obrigatorio={true}
             error={!nomeValido}
             alturaInput="small"
@@ -177,7 +180,7 @@ export const Cadastro: React.FC = () => {
             meuOnChange={handleChange}
           />
 
-          <Input
+          <InputCadastro
             obrigatorio={true}
             error={!cpfValido}
             alturaInput="small"
@@ -195,7 +198,7 @@ export const Cadastro: React.FC = () => {
             }}
           />
 
-          <Input
+          <InputCadastro
             obrigatorio={true}
             error={!emailValido}
             alturaInput="small"
