@@ -148,6 +148,9 @@ export const Cadastro: React.FC = () => {
 
     dispatch(adicionarUsuario(novoUsuario));
     limparCampos();
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   return (

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const ThemeStyle = styled.div`
+export const ThemeStyleButton = styled.div`
   display: flex;
   position: absolute;
 
