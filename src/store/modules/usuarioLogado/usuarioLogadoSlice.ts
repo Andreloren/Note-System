@@ -31,12 +31,12 @@ const usuarioLogadoSlice = createSlice({
     incluirUsuarioLogado: (state, action: PayloadAction<Usuario>) => {
       return action.payload;
     },
-    adicionarRecados: (state, action: PayloadAction<Recado>) => {
-      state.recados = [...state.recados, action.payload];
-    },
+    // adicionarRecados: (state, action: PayloadAction<Recado>) => {
+    //   state.recados = [...state.recados, action.payload];
+    // },
   },
 });
 
-export const { limparUsuarioLogado, incluirUsuarioLogado, adicionarRecados } =
+export const { limparUsuarioLogado, incluirUsuarioLogado } =
   usuarioLogadoSlice.actions;
 export default usuarioLogadoSlice.reducer;

@@ -17,14 +17,29 @@ export const boxHeadingStyledNote = {
 
 export const paperStyledNote = {
   padding: "10px 25px",
+  margin: "10px 0",
 };
 
 export const buttonStyledNote = {
   width: "100%",
   padding: "10px 0",
-  margin: "10px",
+  margin: "20px",
+};
+
+export const ButtonStyledOneNote = {
+  width: "30%",
+  padding: "10px 0",
+  margin: "20px",
 };
 
 export const gridNote = {
-  margin: "15px 50px",
+  margin: "5px 50px",
+};
+
+export const gridNotes = {
+  margin: "10px 0",
+};
+
+export const paperNotes = {
+  margin: "0 10px",
 };
