@@ -5,38 +5,33 @@ export interface Recado {
   id: string;
   descricao: string;
   detalhamento: string;
+  userEmail?: string;
 }
 export interface Usuario {
   nome: string;
   cpf: string;
   email: string;
   senha: string;
-  recados: Recado[];
 }
-const initialState: Usuario = {
+const initialState: Partial<Usuario> = {
   nome: "",
-  cpf: "",
   email: "",
-  senha: "",
-  recados: [],
 };
 
 const usuarioLogadoSlice = createSlice({
   name: "usuarioLogado",
   initialState: initialState,
   reducers: {
-    limparUsuarioLogado: (state, action: PayloadAction<Usuario>) => {
+    limparUsuarioLogado: (state) => {
       return initialState;
     },
-    incluirUsuarioLogado: (state, action: PayloadAction<Usuario>) => {
+    incluirUsuarioLogado: (state, action: PayloadAction<Partial<Usuario>>) => {
       return action.payload;
     },
-    // adicionarRecados: (state, action: PayloadAction<Recado>) => {
-    //   state.recados = [...state.recados, action.payload];
-    // },
   },
 });
 
 export const { limparUsuarioLogado, incluirUsuarioLogado } =
   usuarioLogadoSlice.actions;
+
 export default usuarioLogadoSlice.reducer;

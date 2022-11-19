@@ -1,14 +1,6 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React from "react";
+import { Box, Grid, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../shared/components/button/Button";
 import { Heading } from "../../shared/components/heading/Heading";
 import { InputNote } from "../../shared/components/recados/RecadosInput";
@@ -16,15 +8,109 @@ import {
   boxHeadingStyledNote,
   boxStyledNote,
   buttonStyledNote,
-  ButtonStyledOneNote,
   gridNote,
-  gridNotes,
-  paperNotes,
   paperStyledNote,
 } from "../../shared/components/recados/RecadosStyled";
-// import { v4 as uuidv4 } from "uuid";
+
+import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
+import {
+  limparUsuarioLogado,
+  Recado,
+} from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
+
+import { v4 as uuidv4 } from "uuid";
+import { Recados } from "../../shared/components/recados/RecadosMap";
+import {
+  adicionarItem,
+  selectAll,
+} from "../../store/modules/recados/recadosSlice";
 
 export const Home: React.FC = () => {
+  const [descricao, setDescricao] = useState("");
+  const [descricaoValido, setDescricaoValido] = useState(false);
+
+  const [detalhamento, setDetalhamento] = useState("");
+  const [detalhamentoValido, setDetalhamentoValido] = useState(false);
+
+  const [recadosLocais, setRecadosLocais] = useState<Recado[]>([]);
+
+  const navigate = useNavigate();
+
+  const usuarioLogado = useAppSelector((estado) => estado.usuarioLogado);
+  const dispatch = useAppDispatch();
+
+  const recados = useAppSelector(selectAll);
+
+  // useEffect(() => {
+  //   if (!usuarioLogado) {
+  //     navigate("/");
+  //     return;
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const recadosUsuarios = recados.filter(
+      (recado) => recado.userEmail === usuarioLogado.email
+    );
+    setRecadosLocais(recadosUsuarios);
+  }, [recados, usuarioLogado]);
+
+  useEffect(() => {
+    if (!descricao) {
+      setDescricaoValido(false);
+    } else {
+      setDescricaoValido(true);
+    }
+    if (!detalhamento) {
+      setDetalhamentoValido(false);
+    } else {
+      setDetalhamentoValido(true);
+    }
+  }, [descricao, detalhamento]);
+
+  const handleChangeRecados = (value: string, key: React.ReactNode) => {
+    switch (key) {
+      case "Detalhamento":
+        setDetalhamento(value);
+        break;
+
+      case "Descrição":
+        setDescricao(value);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const limparCamposRecado = () => {
+    setDescricao("");
+    setDetalhamento("");
+  };
+
+  const handleCadastrarRecados = () => {
+    const novoRecado: Recado = {
+      id: uuidv4(),
+      detalhamento: detalhamento,
+      descricao: descricao,
+      userEmail: usuarioLogado.email,
+    };
+
+    if (!descricao || !detalhamento) {
+      alert("Necessário digitar alguma informação");
+      return;
+    }
+
+    dispatch(adicionarItem(novoRecado));
+    limparCamposRecado();
+  };
+
+  const handleLogout = () => {
+    dispatch(limparUsuarioLogado());
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
   return (
     <>
       <Box sx={boxStyledNote}>
@@ -36,7 +122,7 @@ export const Home: React.FC = () => {
       </Box>
       <Box>
         <Heading
-          texto={`Painel de recados de ${"André"}`}
+          texto={`Painel de recados de ${usuarioLogado.nome}`}
           tamanho="h5"
           sx={boxHeadingStyledNote}
         />
@@ -48,10 +134,11 @@ export const Home: React.FC = () => {
               identificacao="standard-helperText"
               placeholder="Detalhamento"
               variante="standard"
-              erro={true}
+              erro={!detalhamentoValido}
               comprimentoTotal={true}
-              meuOnChange={() => {}}
+              meuOnChange={handleChangeRecados}
               sizeInput="small"
+              valor={detalhamento}
             />
           </Paper>
         </Grid>
@@ -61,10 +148,11 @@ export const Home: React.FC = () => {
               identificacao="standard-helperText"
               placeholder="Descrição"
               variante="standard"
-              erro={true}
+              erro={!descricaoValido}
               comprimentoTotal={true}
-              meuOnChange={() => {}}
+              meuOnChange={handleChangeRecados}
               sizeInput="small"
+              valor={descricao}
             />
           </Paper>
         </Grid>
@@ -75,7 +163,7 @@ export const Home: React.FC = () => {
             cor="success"
             tamanho="small"
             variacao="contained"
-            myOnClick={() => {}}
+            myOnClick={handleCadastrarRecados}
             sx={buttonStyledNote}
           ></Button>
         </Grid>
@@ -86,50 +174,20 @@ export const Home: React.FC = () => {
             cor="error"
             tamanho="small"
             variacao="contained"
-            myOnClick={() => {}}
+            myOnClick={handleLogout}
             sx={buttonStyledNote}
           ></Button>
         </Grid>
       </Grid>
 
       <Grid container columns={16}>
-        <Grid sx={gridNotes} lg={4} md={5} sm={6} xs={14}>
-          <Paper elevation={3} sx={paperNotes}>
-            <Card>
-              <CardContent>
-                <Typography variant="h5" align="center">
-                  NOTE
-                </Typography>
-                <Typography sx={{ my: 2 }} variant="body1" align="center">
-                  Detalhamento
-                </Typography>
-                <Typography variant="body2" align="center">
-                  Descrição
-                </Typography>
-              </CardContent>
-              <Grid container sx={{ justifyContent: "center" }}>
-                <Button
-                  texto="Editar"
-                  tipoBotao="button"
-                  cor="warning"
-                  tamanho="small"
-                  variacao="outlined"
-                  myOnClick={() => {}}
-                  sx={ButtonStyledOneNote}
-                ></Button>
-                <Button
-                  texto="Excluir"
-                  tipoBotao="button"
-                  cor="error"
-                  tamanho="small"
-                  variacao="outlined"
-                  myOnClick={() => {}}
-                  sx={ButtonStyledOneNote}
-                ></Button>
-              </Grid>
-            </Card>
-          </Paper>
-        </Grid>
+        {recadosLocais.map((card) => (
+          <Recados
+            id={card.id}
+            descricao={card.descricao}
+            detalhamento={card.detalhamento}
+          />
+        ))}
       </Grid>
     </>
   );

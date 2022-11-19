@@ -47,13 +47,7 @@ export type buttonColor =
   | "warning"
   | undefined;
 
-export type buttonVariant =
-  | "filled"
-  | "outlined"
-  | "standard"
-  | "contained"
-  | "text"
-  | undefined;
+export type buttonVariant = "outlined" | "contained" | "text";
 
 export type buttonType = "submit" | "button" | "reset";
 

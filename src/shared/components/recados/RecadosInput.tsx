@@ -8,19 +8,18 @@ import {
 } from "../tipos/Tipos";
 
 interface InputNoteProps {
-  textoAjuda?: React.ReactNode;
   placeholder?: React.ReactNode;
   identificacao?: string;
   variante?: inputVariant;
   erro?: boolean;
   comprimentoTotal: boolean;
   propsInput?: object;
-  meuOnChange: (event: object) => void;
+  meuOnChange: (value: string, key: React.ReactNode) => void;
   sizeInput?: inputSize;
+  valor?: string;
 }
 
 export const InputNote: React.FC<InputNoteProps> = ({
-  textoAjuda,
   identificacao,
   placeholder,
   variante,
@@ -29,19 +28,20 @@ export const InputNote: React.FC<InputNoteProps> = ({
   propsInput,
   meuOnChange,
   sizeInput,
+  valor,
 }) => {
   return (
     <div>
       <TextField
-        helperText={textoAjuda}
         id={identificacao}
         label={placeholder}
         variant={variante}
         error={erro}
         fullWidth={comprimentoTotal}
         InputProps={propsInput}
-        onChange={meuOnChange}
+        onChange={(ev) => meuOnChange(ev.target.value, placeholder)}
         size={sizeInput}
+        value={valor}
       />
     </div>
   );

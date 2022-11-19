@@ -56,7 +56,7 @@ const ToggleColorMode: React.FC = () => {
 
   return (
     <Provider store={minhaStore}>
-      <PersistGate persistor={meuPersistor}>
+      <PersistGate loading={null} persistor={meuPersistor}>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />

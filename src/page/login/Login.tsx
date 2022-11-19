@@ -81,17 +81,21 @@ export const Login: React.FC = () => {
       senha: senha,
     };
 
-    const usuarioLogando = usuarios.find(
+    const buscaUsuario = usuarios.find(
       (usuarioLog) =>
         usuarioLog.cpf === userLog.cpf && usuarioLog.senha === userLog.senha
     );
 
-    if (!usuarioLogando) {
+    if (!buscaUsuario) {
       alert("CPF inexistente ou Senha incorreta");
       return;
     }
 
-    dispatch(incluirUsuarioLogado(usuarioLogando));
+    const usuarioLogado = {
+      nome: buscaUsuario.nome,
+      email: buscaUsuario.email,
+    };
+    dispatch(incluirUsuarioLogado(usuarioLogado));
     navigate("/home");
   };
 

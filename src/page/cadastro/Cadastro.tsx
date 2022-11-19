@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Box, Paper } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import { useNavigate } from "react-router-dom";
+
 import MaskedInput from "react-text-mask";
+import {
+  MaskCpf,
+  MaskEmail,
+  regexNome,
+  regexCpf,
+  regexEmail,
+} from "../../shared/components/mascara/Mask";
 
 import { Heading } from "../../shared/components/heading/Heading";
 import { boxStyledLog as boxStyledCad } from "../../shared/components/login/LoginStyled";
@@ -19,14 +27,9 @@ import { buttonStyled } from "../../shared/components/button/ButtonStyled";
 import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
 import { label } from "../../shared/components/tipos/Tipos";
+
 import type { Usuario } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
-import {
-  MaskCpf,
-  MaskEmail,
-  regexNome,
-  regexCpf,
-  regexEmail,
-} from "../../shared/components/mascara/Mask";
+
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
 import { adicionarUsuario } from "../../store/modules/usuarios/usuariosSlice";
 
@@ -114,8 +117,6 @@ export const Cadastro: React.FC = () => {
 
       case "Confirmação de Senha":
         setRepSenha(value.toLowerCase());
-        console.log(setRepSenha);
-
         break;
 
       default:
@@ -137,7 +138,6 @@ export const Cadastro: React.FC = () => {
       cpf: cpf,
       email: email,
       senha: senha,
-      recados: [],
     };
 
     const usuarioExistente = usuarios.find(
@@ -153,7 +153,7 @@ export const Cadastro: React.FC = () => {
     limparCampos();
     setTimeout(() => {
       navigate("/");
-    }, 2000);
+    }, 1000);
   };
 
   return (

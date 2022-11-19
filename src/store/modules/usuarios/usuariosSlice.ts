@@ -12,11 +12,9 @@ const usuariosSlice = createSlice({
     adicionarUsuario: (state, action: PayloadAction<Usuario>) => {
       return [...state, action.payload];
     },
-    limpar() {
-      return initialState;
-    },
   },
 });
 
-export const { adicionarUsuario, limpar } = usuariosSlice.actions;
+export const { adicionarUsuario } = usuariosSlice.actions;
+
 export default usuariosSlice.reducer;

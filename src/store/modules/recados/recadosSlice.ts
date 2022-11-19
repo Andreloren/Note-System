@@ -2,7 +2,7 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { Recado } from "../usuarioLogado/usuarioLogadoSlice";
 
 const adapter = createEntityAdapter<Recado>({
-  selectId: (recado) => recado.id,
+  selectId: (recados) => recados.id,
 });
 
 export const { selectAll, selectById } = adapter.getSelectors(
