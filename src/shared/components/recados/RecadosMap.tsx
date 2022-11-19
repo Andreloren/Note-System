@@ -6,13 +6,14 @@ import { useAppDispatch } from "../../../store/modules/hooks";
 import { Recado } from "../../../store/modules/usuarioLogado/usuarioLogadoSlice";
 import { Button } from "../button/Button";
 import { ButtonStyledOneNote, gridNotes, paperNotes } from "./RecadosStyled";
+import { removerItem } from "../../../store/modules/recados/recadosSlice";
 
 export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
   const dispatch = useAppDispatch();
 
-  // const handleRemoveRecado = () => {
-  //   dispatch(removerRecados);
-  // };
+  const handleRemoveRecado = () => {
+    dispatch(removerItem(id));
+  };
 
   return (
     <Grid sx={gridNotes} lg={3} md={5} sm={6} xs={14}>
@@ -46,7 +47,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
               cor="error"
               tamanho="small"
               variacao="outlined"
-              myOnClick={() => {}}
+              myOnClick={handleRemoveRecado}
               sx={ButtonStyledOneNote}
             ></Button>
           </Grid>
