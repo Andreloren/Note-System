@@ -13,15 +13,22 @@ import {
   atualizarItem,
   removerItem,
 } from "../../../store/modules/recados/recadosSlice";
-import { buttonStyledModal, ModalStyled } from "../modal/ModalStyled";
+import {
+  buttonStyledModal,
+  buttonStyledModalExclude,
+  ModalStyled,
+} from "../modal/ModalStyled";
 
 export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
   const [novoDetalhamento, setnovoDetalhamento] = useState(detalhamento);
   const [novaDescricao, setnovaDescricao] = useState(descricao);
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+  const [openExclude, setOpenExclude] = useState(false);
+  const handleOpenExclude = () => setOpenExclude(true);
+  const handleCloseExclude = () => setOpenExclude(false);
 
   const dispatch = useAppDispatch();
 
@@ -36,7 +43,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
       })
     );
 
-    handleClose();
+    handleCloseEdit();
   };
 
   const handleRemoveRecado = () => {
@@ -50,7 +57,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
           <Card>
             <CardContent>
               <Typography variant="h5" align="center">
-                Recados
+                {`Recado(s)`}
               </Typography>
 
               <Typography sx={{ my: 2 }} variant="body1" align="center">
@@ -67,7 +74,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
                 cor="warning"
                 tamanho="small"
                 variacao="outlined"
-                myOnClick={handleOpen}
+                myOnClick={handleOpenEdit}
                 sx={ButtonStyledOneNote}
               ></Button>
               <Button
@@ -76,7 +83,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
                 cor="error"
                 tamanho="small"
                 variacao="outlined"
-                myOnClick={handleRemoveRecado}
+                myOnClick={handleOpenExclude}
                 sx={ButtonStyledOneNote}
               ></Button>
             </Grid>
@@ -85,7 +92,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
       </Grid>
 
       <Modal
-        open={open}
+        open={openEdit}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -128,8 +135,43 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
               cor="error"
               tamanho="small"
               variacao="contained"
-              myOnClick={handleClose}
+              myOnClick={handleCloseEdit}
               sx={buttonStyledModal}
+            ></Button>
+          </Grid>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openExclude}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={ModalStyled}>
+          <Heading
+            texto="Deseja realmente excluir o Recado?"
+            tamanho="h6"
+            sx={{ color: "#069dad", display: "flex", justifyContent: "center" }}
+          />
+
+          <Grid container sx={{ justifyContent: "center" }}>
+            <Button
+              texto="Confirmar"
+              tipoBotao="button"
+              cor="success"
+              tamanho="small"
+              variacao="contained"
+              myOnClick={handleRemoveRecado}
+              sx={buttonStyledModalExclude}
+            ></Button>
+            <Button
+              texto="Cancelar"
+              tipoBotao="button"
+              cor="error"
+              tamanho="small"
+              variacao="contained"
+              myOnClick={handleCloseExclude}
+              sx={buttonStyledModalExclude}
             ></Button>
           </Grid>
         </Box>

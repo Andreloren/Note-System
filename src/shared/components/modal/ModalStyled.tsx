@@ -19,3 +19,9 @@ export const buttonStyledModal = {
   padding: "5px",
   margin: "15px 10px 0 10px",
 };
+
+export const buttonStyledModalExclude = {
+  width: "100%",
+  padding: "5px",
+  margin: "40px 10px 0 10px",
+};
