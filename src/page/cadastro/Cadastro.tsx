@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Box, Paper } from "@mui/material";
+import React, { forwardRef, useEffect, useState } from "react";
+import { Box, Paper, Snackbar } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
 import { useNavigate } from "react-router-dom";
 
 import MaskedInput from "react-text-mask";
@@ -33,6 +35,13 @@ import type { Usuario } from "../../store/modules/usuarioLogado/usuarioLogadoSli
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
 import { adicionarUsuario } from "../../store/modules/usuarios/usuariosSlice";
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export const Cadastro: React.FC = () => {
   const [nome, setNome] = useState("");
   const [nomeValido, setNomeValido] = useState(false);
@@ -47,6 +56,9 @@ export const Cadastro: React.FC = () => {
   const [repSenha, setRepSenha] = useState("");
   const [senhaValido, setSenhaValido] = useState(false);
   const [senhaRepValido, setSenhaRepValido] = useState(false);
+
+  const [openSnackBarSucess, setOpenSnackBarSucess] = useState(false);
+  const [openSnackBarError, setOpenSnackBarError] = useState(false);
 
   const [mensagemNome, setMensagemNome] = useState("");
   const [mensagemCpf, setMensagemCpf] = useState("");
@@ -97,6 +109,36 @@ export const Cadastro: React.FC = () => {
     }
   }, [senha, repSenha, email, cpf, nome]);
 
+  const handleClickSnackBarSucess = () => {
+    setOpenSnackBarSucess(true);
+  };
+
+  const handleClickSnackBarError = () => {
+    setOpenSnackBarError(true);
+  };
+
+  const handleCloseSnackBarSucess = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackBarSucess(false);
+  };
+
+  const handleCloseSnackBarError = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackBarError(false);
+  };
+
   const handleChange = (value: string, key: label) => {
     switch (key) {
       case "Nome Completo":
@@ -145,15 +187,16 @@ export const Cadastro: React.FC = () => {
     );
 
     if (usuarioExistente) {
-      alert("Usuario Extistente");
+      handleClickSnackBarError();
       return;
     }
 
     dispatch(adicionarUsuario(novoUsuario));
+    handleClickSnackBarSucess();
     limparCampos();
     setTimeout(() => {
       navigate("/");
-    }, 1000);
+    }, 2000);
   };
 
   return (
@@ -271,6 +314,34 @@ export const Cadastro: React.FC = () => {
           />
         </Box>
       </Paper>
+
+      <Snackbar
+        open={openSnackBarError}
+        autoHideDuration={1500}
+        onClose={handleCloseSnackBarError}
+      >
+        <Alert
+          onClose={handleCloseSnackBarError}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Usuário já cadastrado!!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openSnackBarSucess}
+        autoHideDuration={1500}
+        onClose={handleCloseSnackBarSucess}
+      >
+        <Alert
+          onClose={handleCloseSnackBarSucess}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Cadastro Efetuado com Sucesso!!!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

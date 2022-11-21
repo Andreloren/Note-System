@@ -9,8 +9,8 @@ const initialState: Modal = {
   open: false,
 };
 
-const showModal = createSlice({
-  name: "modal",
+const contadorRecados = createSlice({
+  name: "contador",
   initialState: initialState,
   reducers: {
     esconderModal: (state) => {
@@ -22,6 +22,6 @@ const showModal = createSlice({
   },
 });
 
-export const { esconderModal, mostrarModal } = showModal.actions;
+export const { esconderModal, mostrarModal } = contadorRecados.actions;
 
-export default showModal.reducer;
+export default contadorRecados.reducer;

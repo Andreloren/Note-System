@@ -13,10 +13,12 @@ import {
   atualizarItem,
   removerItem,
 } from "../../../store/modules/recados/recadosSlice";
-import { ModalEdit } from "../modal/Modal";
 import { buttonStyledModal, ModalStyled } from "../modal/ModalStyled";
 
 export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
+  const [novoDetalhamento, setnovoDetalhamento] = useState(detalhamento);
+  const [novaDescricao, setnovaDescricao] = useState(descricao);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,9 +29,14 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
     dispatch(
       atualizarItem({
         id: id,
-        changes: { detalhamento: detalhamento, descricao: descricao },
+        changes: {
+          detalhamento: novoDetalhamento,
+          descricao: novaDescricao,
+        },
       })
     );
+
+    handleClose();
   };
 
   const handleRemoveRecado = () => {
@@ -43,7 +50,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
           <Card>
             <CardContent>
               <Typography variant="h5" align="center">
-                NOTE
+                Recados
               </Typography>
 
               <Typography sx={{ my: 2 }} variant="body1" align="center">
@@ -72,11 +79,6 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
                 myOnClick={handleRemoveRecado}
                 sx={ButtonStyledOneNote}
               ></Button>
-              <ModalEdit
-                id={id}
-                descricao={detalhamento}
-                detalhamento={descricao}
-              />
             </Grid>
           </Card>
         </Paper>
@@ -96,17 +98,20 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
           <TextField
             sx={{ margin: "5px 0" }}
             id="standard-basic"
-            label="Descrição"
+            label="Detalhamento"
             variant="standard"
-            defaultValue={descricao}
+            defaultValue={detalhamento}
+            onChange={(e) => setnovoDetalhamento(e.target.value)}
           ></TextField>
           <TextField
             sx={{ margin: "5px 0" }}
             id="standard-basic"
-            label="Detalhamento"
+            label="Descrição"
             variant="standard"
-            defaultValue={detalhamento}
+            defaultValue={descricao}
+            onChange={(e) => setnovaDescricao(e.target.value)}
           ></TextField>
+
           <Grid container sx={{ justifyContent: "center" }}>
             <Button
               texto="Salvar"

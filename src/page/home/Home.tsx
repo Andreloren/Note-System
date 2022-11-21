@@ -41,19 +41,21 @@ export const Home: React.FC = () => {
 
   const recados = useAppSelector(selectAll);
 
-  // useEffect(() => {
-  //   if (!usuarioLogado) {
-  //     navigate("/");
-  //     return;
-  //   }
-  // }, []);
+  useEffect(() => {
+    const navigateLogin = () => {
+      navigate("/");
+    };
+    if (usuarioLogado.email === "") {
+      navigateLogin();
+    }
+  }, [usuarioLogado, navigate]);
 
   useEffect(() => {
     const recadosUsuarios = recados.filter(
       (recado) => recado.userEmail === usuarioLogado.email
     );
     setRecadosLocais(recadosUsuarios);
-  }, [recados, usuarioLogado]);
+  }, [recados, usuarioLogado, Recados]);
 
   useEffect(() => {
     if (!descricao) {

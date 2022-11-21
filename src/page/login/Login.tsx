@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MaskedInput from "react-text-mask";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Snackbar } from "@mui/material";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import { Logo } from "../../shared/components/logo/Logo";
 import { Heading } from "../../shared/components/heading/Heading";
@@ -29,6 +30,13 @@ interface UserLog {
   senha: string;
 }
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export const Login: React.FC = () => {
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
@@ -37,6 +45,9 @@ export const Login: React.FC = () => {
   const [mensagemSenha, setMensagemSenha] = useState("");
   const [senhaValido, setSenhaValido] = useState(false);
   const [cpfValido, setcpfValido] = useState(false);
+
+  const [openSnackBarSucess, setOpenSnackBarSucess] = useState(false);
+  const [openSnackBarError, setOpenSnackBarError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -75,6 +86,35 @@ export const Login: React.FC = () => {
     }
   }, [cpf, senha]);
 
+  const handleClickSnackBarSucess = () => {
+    setOpenSnackBarSucess(true);
+  };
+  const handleClickSnackBarError = () => {
+    setOpenSnackBarError(true);
+  };
+
+  const handleCloseSnackBarSucess = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackBarSucess(false);
+  };
+
+  const handleCloseSnackBarError = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackBarError(false);
+  };
+
   const handleClickLogin = () => {
     const userLog: UserLog = {
       cpf: cpf,
@@ -87,7 +127,7 @@ export const Login: React.FC = () => {
     );
 
     if (!buscaUsuario) {
-      alert("CPF inexistente ou Senha incorreta");
+      handleClickSnackBarError();
       return;
     }
 
@@ -96,7 +136,10 @@ export const Login: React.FC = () => {
       email: buscaUsuario.email,
     };
     dispatch(incluirUsuarioLogado(usuarioLogado));
-    navigate("/home");
+    handleClickSnackBarSucess();
+    setTimeout(() => {
+      navigate("/home");
+    }, 2000);
   };
 
   return (
@@ -157,6 +200,34 @@ export const Login: React.FC = () => {
           />
         </Box>
       </Paper>
+
+      <Snackbar
+        open={openSnackBarError}
+        autoHideDuration={1500}
+        onClose={handleCloseSnackBarError}
+      >
+        <Alert
+          onClose={handleCloseSnackBarError}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          CPF ou Senha Inválidos!!!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openSnackBarSucess}
+        autoHideDuration={1500}
+        onClose={handleCloseSnackBarSucess}
+      >
+        <Alert
+          onClose={handleCloseSnackBarSucess}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Login Efetuado com Sucesso!!!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
