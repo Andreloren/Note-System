@@ -13,22 +13,22 @@ Projeto Final de Módulo - Growdev
 <br>
 
 <p align="center">
-  <img alt="loginlight" src=".github/LoginDesktopLight.png" width="50%">
-  <img alt="logindark" src=".github/LoginDesktopDark.png" width="50%">
+  <img alt="loginlight" src=".github/LoginDesktopLight.png" width="45%">
+  <img alt="logindark" src=".github/LoginDesktopDark.png" width="45%">
 </p>
 <p align="center">
   
 </p>
 <p align="center">
-  <img alt="cadastrolight" src=".github/CadastroDesktopLight.png" width="50%">
-  <img alt="cadastrodark" src=".github/CadastroDesktopDarkt.png" width="50%">
+  <img alt="cadastrolight" src=".github/CadastroDesktopLight.png" width="45%">
+  <img alt="cadastrodark" src=".github/CadastroDesktopDark.png" width="45%">
 </p>
 <p align="center">
   
 </p>
 <p align="center">
-  <img alt="recadolight" src=".github/RecadosDesktopLight.png" width="50%">
-  <img alt="recadodark" src=".github/RecadosDesktopDark.png" width="50%">
+  <img alt="recadolight" src=".github/RecadosDesktopLight.png" width="45%">
+  <img alt="recadodark" src=".github/RecadosDesktopDark.png" width="45%">
 </p>
 <p align="center">
   
