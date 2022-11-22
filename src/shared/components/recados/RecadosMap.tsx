@@ -26,6 +26,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const handleOpenEdit = () => setOpenEdit(true);
   const handleCloseEdit = () => setOpenEdit(false);
+
   const [openExclude, setOpenExclude] = useState(false);
   const handleOpenExclude = () => setOpenExclude(true);
   const handleCloseExclude = () => setOpenExclude(false);
@@ -42,12 +43,12 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
         },
       })
     );
-
     handleCloseEdit();
   };
 
   const handleRemoveRecado = () => {
     dispatch(removerItem(id));
+    handleCloseExclude();
   };
 
   return (
@@ -57,7 +58,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
           <Card>
             <CardContent>
               <Typography variant="h5" align="center">
-                {`Recado(s)`}
+                Recado
               </Typography>
 
               <Typography sx={{ my: 2 }} variant="body1" align="center">
