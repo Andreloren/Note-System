@@ -13,8 +13,8 @@ Projeto Final de Módulo - Growdev
 <br>
 
 <p align="center">
-  <img alt="loginlight" src=".github/LoginDesktopLight.png" width="25%">
-  <img alt="logindark" src=".github/LoginDesktopDark.png" width="25%">
+  <img alt="loginlight" src=".github/LoginDesktopLight.png" width="40%">
+  <img alt="logindark" src=".github/LoginDesktopDark.png" width="40%">
 </p>
 <p align="center">
   
