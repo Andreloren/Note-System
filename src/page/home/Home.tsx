@@ -123,11 +123,13 @@ export const Home: React.FC = () => {
         />
       </Box>
       <Box>
-        <Heading
-          texto={`Painel de recados de ${usuarioLogado.nome}`}
-          tamanho="h5"
-          sx={boxHeadingStyledNote}
-        />
+        <Grid container md={12} xs={8}>
+          <Heading
+            texto={`Painel de recados de ${usuarioLogado.nome}`}
+            tamanho="h5"
+            sx={boxHeadingStyledNote}
+          />
+        </Grid>
       </Box>
       <Grid container columns={16} sx={gridNote}>
         <Grid md={5} sm={7} xs={12} sx={{ mr: 1 }}>
@@ -144,7 +146,7 @@ export const Home: React.FC = () => {
             />
           </Paper>
         </Grid>
-        <Grid md={5} sm={7} xs={12} sx={{ mx: 1 }}>
+        <Grid md={5} sm={7} xs={12} sx={{ mr: 1 }}>
           <Paper elevation={1} sx={paperStyledNote}>
             <InputNote
               identificacao="standard-helperText"
