@@ -11,6 +11,7 @@ import { Button } from "../button/Button";
 import { ButtonStyledOneNote, gridNotes, paperNotes } from "./RecadosStyled";
 import {
   atualizarRecadoAPI,
+  buscarRecadosUsuarioAPI,
   // buscarRecadosUsuarioAPI,
   deletarRecadoAPI,
 } from "../../../store/modules/recados/recadosSlice";
@@ -60,6 +61,7 @@ export const Recados: React.FC<Recado> = ({
         },
       })
     );
+    dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
     handleCloseEdit();
   };
 

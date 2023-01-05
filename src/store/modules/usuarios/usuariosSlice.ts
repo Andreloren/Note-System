@@ -6,7 +6,7 @@ import {
 import { RootState } from "../..";
 import { requisicaoApi } from "../../../services/api";
 
-import { atualizarUsuario, Recado, Usuario } from "../../../interfaces";
+import { Usuario } from "../../../interfaces";
 
 const userAdapter = createEntityAdapter<Usuario>({
   selectId: (user) => user.cpf,

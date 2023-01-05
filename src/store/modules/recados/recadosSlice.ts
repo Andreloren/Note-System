@@ -41,18 +41,12 @@ export const adicionarRecadoAPI = createAsyncThunk(
     const dataPartial = JSON.parse(respostaApi.data);
 
     return dataPartial;
-
-    // const dataPartial = JSON.parse(respostaApi.data);
-    // if (respostaApi.status === 200) {
-    //   dispatch(buscarRecadosUsuarioAPI(dados.cpf));
-    //   return dataPartial;
-    // }
   }
 );
 
 export const atualizarRecadoAPI = createAsyncThunk(
   "recado/atualizarRecado",
-  async (dados: IatualizaRecado) => {
+  async (dados: IatualizaRecado, { dispatch }) => {
     const respostaApi = await requisicaoApi.put(
       `/usuarios/${dados.cpf}/recados/${dados.recado.id}`,
       JSON.stringify(dados.recado)
@@ -60,8 +54,15 @@ export const atualizarRecadoAPI = createAsyncThunk(
 
     const dataPartial = JSON.parse(respostaApi.data);
 
+    if (respostaApi.status === 200) {
+      dispatch(buscarRecadosUsuarioAPI(dados.cpf));
+    }
     return dataPartial;
   }
+
+  // const dataPartial = JSON.parse(respostaApi.data);
+
+  // return dataPartial;
 );
 
 export const deletarRecadoAPI = createAsyncThunk(
@@ -89,30 +90,30 @@ const recadoSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(buscarRecadosUsuarioAPI.fulfilled, (state, action) => {
-      state.sucess = action.payload.success;
+      state.sucess = action.payload.sucess;
       state.message = action.payload.message;
-      adapter.addOne(state, action.payload);
+      adapter.setAll(state, action.payload.data);
     });
 
     builder.addCase(adicionarRecadoAPI.fulfilled, (state, action) => {
-      state.sucess = action.payload.success;
+      state.sucess = action.payload.sucess;
       state.message = action.payload.message;
-      adapter.addOne(state, action.payload.dados);
+      adapter.addOne(state, action.payload.data);
     });
 
     builder.addCase(atualizarRecadoAPI.fulfilled, (state, action) => {
       state.sucess = action.payload.sucess;
       state.message = action.payload.message;
       adapter.updateOne(state, {
-        id: action.payload.dados.id,
-        changes: action.payload.dados,
+        id: action.payload.data.id,
+        changes: action.payload.data,
       });
     });
 
     builder.addCase(deletarRecadoAPI.fulfilled, (state, action) => {
-      state.sucess = action.payload.success;
+      state.sucess = action.payload.sucess;
       state.message = action.payload.message;
-      adapter.setAll(state, action.payload.dados);
+      adapter.removeOne(state, action.payload.data.id);
     });
   },
 });

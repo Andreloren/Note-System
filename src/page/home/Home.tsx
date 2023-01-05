@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Grid, IconButton, Paper } from "@mui/material";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
@@ -23,14 +23,12 @@ import { limparUsuarioLogado } from "../../store/modules/usuarioLogado/usuarioLo
 import {
   adicionarRecadoAPI,
   adicionarTodosRecados,
+  atualizarRecadoAPI,
   buscarRecados,
   buscarRecadosUsuarioAPI,
   deletarTodos,
 } from "../../store/modules/recados/recadosSlice";
-import {
-  // atualizarRecadosUsuarioAPI,
-  selecionarUsuariosPorCpf,
-} from "../../store/modules/usuarios/usuariosSlice";
+import { selecionarUsuariosPorCpf } from "../../store/modules/usuarios/usuariosSlice";
 
 export const Home: React.FC = () => {
   const [descricao, setDescricao] = useState("");
@@ -60,14 +58,8 @@ export const Home: React.FC = () => {
   }, [usuarioLogado, navigate]);
 
   useEffect(() => {
-    if (usuarioPorCpf?.recados) {
-      dispatch(adicionarTodosRecados(usuarioPorCpf.recados));
-    }
-  }, [usuarioPorCpf?.recados, dispatch]);
-
-  useEffect(() => {
     dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
-  }, [recados, dispatch, usuarioLogado]);
+  }, [dispatch, usuarioLogado]);
 
   useEffect(() => {
     if (!descricao) {
@@ -117,15 +109,13 @@ export const Home: React.FC = () => {
         },
       })
     );
-    // dispatch(
-    //   atualizarRecadosUsuarioAPI({ cpf: usuarioLogado, recados: recados })
-    // );
+
     limparCamposRecado();
   };
 
   const handleLogout = () => {
     dispatch(limparUsuarioLogado());
-    // dispatch(deletarTodos());
+    dispatch(deletarTodos());
     setTimeout(() => {
       navigate("/");
     }, 1000);
