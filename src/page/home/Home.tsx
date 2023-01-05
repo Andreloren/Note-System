@@ -28,7 +28,7 @@ import {
   deletarTodos,
 } from "../../store/modules/recados/recadosSlice";
 import {
-  atualizarRecadosUsuarioAPI,
+  // atualizarRecadosUsuarioAPI,
   selecionarUsuariosPorCpf,
 } from "../../store/modules/usuarios/usuariosSlice";
 
@@ -67,7 +67,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
-  }, [recados, dispatch]);
+  }, [recados, dispatch, usuarioLogado]);
 
   useEffect(() => {
     if (!descricao) {
@@ -112,21 +112,20 @@ export const Home: React.FC = () => {
       adicionarRecadoAPI({
         cpf: usuarioLogado,
         recado: {
-          descricao,
           detalhamento,
+          descricao,
         },
       })
     );
+    // dispatch(
+    //   atualizarRecadosUsuarioAPI({ cpf: usuarioLogado, recados: recados })
+    // );
     limparCamposRecado();
   };
 
   const handleLogout = () => {
-    dispatch(
-      atualizarRecadosUsuarioAPI({ cpf: usuarioLogado, recados: recados })
-    );
-
     dispatch(limparUsuarioLogado());
-    dispatch(deletarTodos());
+    // dispatch(deletarTodos());
     setTimeout(() => {
       navigate("/");
     }, 1000);

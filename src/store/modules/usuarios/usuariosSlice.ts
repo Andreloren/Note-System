@@ -31,7 +31,10 @@ export const buscarUsuariosAPI = createAsyncThunk(
 export const adicionarUsuarioAPI = createAsyncThunk(
   "usuarios/adicionarUsuario",
   async (novoUsuario: Usuario) => {
-    const respostaApi = await requisicaoApi.post("/usuarios", novoUsuario);
+    const respostaApi = await requisicaoApi.post(
+      "/usuarios",
+      JSON.stringify(novoUsuario)
+    );
 
     const dataParsed = JSON.parse(respostaApi.data);
 
@@ -39,19 +42,19 @@ export const adicionarUsuarioAPI = createAsyncThunk(
   }
 );
 
-export const atualizarRecadosUsuarioAPI = createAsyncThunk(
-  "usuarios/atualizarRecados",
-  async (novosDados: atualizarUsuario) => {
-    const respostaApi = await requisicaoApi.put(
-      `/usuarios/${novosDados.cpf}`,
-      JSON.stringify(novosDados.recados)
-    );
+// export const atualizarRecadosUsuarioAPI = createAsyncThunk(
+//   "usuarios/atualizarRecados",
+//   async (novosDados: atualizarUsuario) => {
+//     const respostaApi = await requisicaoApi.put(
+//       `/usuarios/${novosDados.cpf}`,
+//       JSON.stringify(novosDados.recados)
+//     );
 
-    const dataPartial = JSON.parse(respostaApi.data);
+//     const dataPartial = JSON.parse(respostaApi.data);
 
-    return dataPartial;
-  }
-);
+//     return dataPartial;
+//   }
+// );
 
 const usuariosSlice = createSlice({
   name: "usuarios",
@@ -73,14 +76,14 @@ const usuariosSlice = createSlice({
       userAdapter.addOne(state, action.payload.data);
     });
 
-    builder.addCase(atualizarRecadosUsuarioAPI.fulfilled, (state, action) => {
-      state.success = action.payload.sucess;
-      state.message = action.payload.message;
-      userAdapter.updateOne(state, {
-        id: action.payload.data.cpf,
-        changes: action.payload.data,
-      });
-    });
+    // builder.addCase(atualizarRecadosUsuarioAPI.fulfilled, (state, action) => {
+    //   state.success = action.payload.sucess;
+    //   state.message = action.payload.message;
+    //   userAdapter.updateOne(state, {
+    //     id: action.payload.data.cpf,
+    //     changes: action.payload.data,
+    //   });
+    // });
   },
 });
 

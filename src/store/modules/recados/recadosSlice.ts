@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   createEntityAdapter,
   createSlice,
@@ -14,7 +13,7 @@ import {
 } from "../../../interfaces";
 
 const adapter = createEntityAdapter<Recado>({
-  selectId: (recados) => recados.id,
+  selectId: (recados) => recados?.id,
 });
 
 export const { selectAll: buscarRecados, selectById: buscarRecadoPorId } =
@@ -81,32 +80,40 @@ export const deletarRecadoAPI = createAsyncThunk(
 const recadoSlice = createSlice({
   name: "recados",
   initialState: adapter.getInitialState({
-    // success: false,
-    // message: "",
+    sucess: false,
+    message: "",
   }),
   reducers: {
     deletarTodos: adapter.removeAll,
     adicionarTodosRecados: adapter.setAll,
   },
-  extraReducers: {
-    [buscarRecadosUsuarioAPI.fulfilled]: (state, action) => {
-      state = action.payload;
-    },
+  extraReducers(builder) {
+    builder.addCase(buscarRecadosUsuarioAPI.fulfilled, (state, action) => {
+      state.sucess = action.payload.success;
+      state.message = action.payload.message;
+      adapter.addOne(state, action.payload);
+    });
 
-    [adicionarRecadoAPI.fulfilled]: (state, action) => {
-      adapter.addOne(state, action.payload.data);
-    },
+    builder.addCase(adicionarRecadoAPI.fulfilled, (state, action) => {
+      state.sucess = action.payload.success;
+      state.message = action.payload.message;
+      adapter.addOne(state, action.payload.dados);
+    });
 
-    [atualizarRecadoAPI.fulfilled]: (state, action) => {
+    builder.addCase(atualizarRecadoAPI.fulfilled, (state, action) => {
+      state.sucess = action.payload.sucess;
+      state.message = action.payload.message;
       adapter.updateOne(state, {
-        id: action.payload.data.recados.id,
-        changes: action.payload.data,
+        id: action.payload.dados.id,
+        changes: action.payload.dados,
       });
-    },
+    });
 
-    [deletarRecadoAPI.fulfilled]: (state, action) => {
-      adapter.setOne(state, action.payload.dados);
-    },
+    builder.addCase(deletarRecadoAPI.fulfilled, (state, action) => {
+      state.sucess = action.payload.success;
+      state.message = action.payload.message;
+      adapter.setAll(state, action.payload.dados);
+    });
   },
 });
 
