@@ -1,29 +1,36 @@
-import { Box, Grid, Paper } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { Box, Grid, IconButton, Paper } from "@mui/material";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
+
 import { Button } from "../../shared/components/button/Button";
 import { Heading } from "../../shared/components/heading/Heading";
 import { InputNote } from "../../shared/components/recados/RecadosInput";
 import {
   boxHeadingStyledNote,
   boxStyledNote,
+  buttonStyledArchive,
   buttonStyledNote,
   gridNote,
   paperStyledNote,
 } from "../../shared/components/recados/RecadosStyled";
+import { Recados } from "../../shared/components/recados/RecadosMap";
+import { status } from "../../shared/components/tipos/Tipos";
 
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
+import { limparUsuarioLogado } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
 import {
-  limparUsuarioLogado,
-  Recado,
-} from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
-
-import { v4 as uuidv4 } from "uuid";
-import { Recados } from "../../shared/components/recados/RecadosMap";
-import {
-  adicionarItem,
-  selectAll,
+  adicionarRecadoAPI,
+  adicionarTodosRecados,
+  buscarRecados,
+  buscarRecadosUsuarioAPI,
+  deletarTodos,
 } from "../../store/modules/recados/recadosSlice";
+import {
+  atualizarRecadosUsuarioAPI,
+  selecionarUsuariosPorCpf,
+} from "../../store/modules/usuarios/usuariosSlice";
 
 export const Home: React.FC = () => {
   const [descricao, setDescricao] = useState("");
@@ -32,30 +39,35 @@ export const Home: React.FC = () => {
   const [detalhamento, setDetalhamento] = useState("");
   const [detalhamentoValido, setDetalhamentoValido] = useState(false);
 
-  const [recadosLocais, setRecadosLocais] = useState<Recado[]>([]);
-
   const navigate = useNavigate();
 
   const usuarioLogado = useAppSelector((estado) => estado.usuarioLogado);
+  const usuarioPorCpf = useAppSelector((estado) =>
+    selecionarUsuariosPorCpf(estado, usuarioLogado)
+  );
+
   const dispatch = useAppDispatch();
 
-  const recados = useAppSelector(selectAll);
+  const recados = useAppSelector(buscarRecados);
 
   useEffect(() => {
     const navigateLogin = () => {
       navigate("/");
     };
-    if (usuarioLogado.email === "") {
+    if (!usuarioLogado) {
       navigateLogin();
     }
   }, [usuarioLogado, navigate]);
 
   useEffect(() => {
-    const recadosUsuarios = recados.filter(
-      (recado) => recado.userEmail === usuarioLogado.email
-    );
-    setRecadosLocais(recadosUsuarios);
-  }, [recados, usuarioLogado, Recados]);
+    if (usuarioPorCpf?.recados) {
+      dispatch(adicionarTodosRecados(usuarioPorCpf.recados));
+    }
+  }, [usuarioPorCpf?.recados, dispatch]);
+
+  useEffect(() => {
+    dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
+  }, [recados, dispatch]);
 
   useEffect(() => {
     if (!descricao) {
@@ -91,24 +103,30 @@ export const Home: React.FC = () => {
   };
 
   const handleCadastrarRecados = () => {
-    const novoRecado: Recado = {
-      id: uuidv4(),
-      detalhamento: detalhamento,
-      descricao: descricao,
-      userEmail: usuarioLogado.email,
-    };
-
     if (!descricao || !detalhamento) {
       alert("Necessário digitar alguma informação");
       return;
     }
 
-    dispatch(adicionarItem(novoRecado));
+    dispatch(
+      adicionarRecadoAPI({
+        cpf: usuarioLogado,
+        recado: {
+          descricao,
+          detalhamento,
+        },
+      })
+    );
     limparCamposRecado();
   };
 
   const handleLogout = () => {
+    dispatch(
+      atualizarRecadosUsuarioAPI({ cpf: usuarioLogado, recados: recados })
+    );
+
     dispatch(limparUsuarioLogado());
+    dispatch(deletarTodos());
     setTimeout(() => {
       navigate("/");
     }, 1000);
@@ -125,7 +143,7 @@ export const Home: React.FC = () => {
       <Box>
         <Grid container md={12} xs={8}>
           <Heading
-            texto={`Painel de recados de ${usuarioLogado.nome}`}
+            texto={`Painel de recados de ${usuarioPorCpf?.nome}`}
             tamanho="h5"
             sx={boxHeadingStyledNote}
           />
@@ -171,6 +189,7 @@ export const Home: React.FC = () => {
             sx={buttonStyledNote}
           ></Button>
         </Grid>
+
         <Grid md={2} sm={3} xs={4}>
           <Button
             texto="Sair"
@@ -183,15 +202,29 @@ export const Home: React.FC = () => {
           ></Button>
         </Grid>
       </Grid>
+      <IconButton color="info" aria-label="archive" sx={buttonStyledArchive}>
+        <UnarchiveIcon fontSize="large" />
+      </IconButton>
 
       <Grid container columns={16}>
-        {recadosLocais.map((card) => (
-          <Recados
-            id={card.id}
-            descricao={card.descricao}
-            detalhamento={card.detalhamento}
-          />
-        ))}
+        {recados
+          .filter((f) => f.status === "ativo")
+          .map(
+            (card: {
+              id: string;
+              status: status;
+              descricao: string;
+              detalhamento: string;
+            }) => (
+              <Recados
+                key={card.id}
+                id={card.id}
+                status={card.status}
+                descricao={card.descricao}
+                detalhamento={card.detalhamento}
+              />
+            )
+          )}
       </Grid>
     </>
   );

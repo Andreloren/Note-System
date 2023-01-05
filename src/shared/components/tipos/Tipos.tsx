@@ -63,3 +63,5 @@ export type label =
   | "Confirmação de Senha";
 
 export type mascara = string | (string | RegExp)[];
+
+export type status = "ativo" | "arquivado";

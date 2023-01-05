@@ -24,6 +24,10 @@ import { label } from "../../shared/components/tipos/Tipos";
 import { MaskCpf, regexCpf } from "../../shared/components/mascara/Mask";
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
 import { incluirUsuarioLogado } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
+import {
+  buscarUsuariosAPI,
+  selecionarUsuarios,
+} from "../../store/modules/usuarios/usuariosSlice";
 
 interface UserLog {
   cpf: string;
@@ -51,7 +55,7 @@ export const Login: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const usuarios = useAppSelector((estado) => estado.usuarios);
+  const usuarios = useAppSelector(selecionarUsuarios);
   const dispatch = useAppDispatch();
 
   const handleChange = (value: string, key: label) => {
@@ -86,9 +90,24 @@ export const Login: React.FC = () => {
     }
   }, [cpf, senha]);
 
+  useEffect(() => {
+    dispatch(buscarUsuariosAPI());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const usuarioLogado = localStorage.getItem("usuarioLogado");
+
+    if (usuarioLogado) {
+      dispatch(incluirUsuarioLogado(usuarioLogado));
+
+      navigate("/home");
+    }
+  }, [dispatch, navigate]);
+
   const handleClickSnackBarSucess = () => {
     setOpenSnackBarSucess(true);
   };
+
   const handleClickSnackBarError = () => {
     setOpenSnackBarError(true);
   };
@@ -116,14 +135,8 @@ export const Login: React.FC = () => {
   };
 
   const handleClickLogin = () => {
-    const userLog: UserLog = {
-      cpf: cpf,
-      senha: senha,
-    };
-
     const buscaUsuario = usuarios.find(
-      (usuarioLog) =>
-        usuarioLog.cpf === userLog.cpf && usuarioLog.senha === userLog.senha
+      (usuarioLog) => usuarioLog.cpf === cpf && usuarioLog.senha === senha
     );
 
     if (!buscaUsuario) {
@@ -131,11 +144,7 @@ export const Login: React.FC = () => {
       return;
     }
 
-    const usuarioLogado = {
-      nome: buscaUsuario.nome,
-      email: buscaUsuario.email,
-    };
-    dispatch(incluirUsuarioLogado(usuarioLogado));
+    dispatch(incluirUsuarioLogado(cpf));
     handleClickSnackBarSucess();
     setTimeout(() => {
       navigate("/home");

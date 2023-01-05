@@ -30,10 +30,14 @@ import { Link } from "../../shared/components/footer/Footer";
 import { FooterStyled } from "../../shared/components/footer/FooterStyled";
 import { label } from "../../shared/components/tipos/Tipos";
 
-import type { Usuario } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
+import type { Usuario } from "../../interfaces";
 
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
-import { adicionarUsuario } from "../../store/modules/usuarios/usuariosSlice";
+import {
+  adicionarUsuarioAPI,
+  buscarUsuariosAPI,
+  selecionarUsuarios,
+} from "../../store/modules/usuarios/usuariosSlice";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -68,7 +72,7 @@ export const Cadastro: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const usuarios = useAppSelector((estado) => estado.usuarios);
+  const usuarios = useAppSelector(selecionarUsuarios);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -108,6 +112,10 @@ export const Cadastro: React.FC = () => {
       setMensagemRepSenha("");
     }
   }, [senha, repSenha, email, cpf, nome]);
+
+  useEffect(() => {
+    dispatch(buscarUsuariosAPI());
+  }, [dispatch]);
 
   const handleClickSnackBarSucess = () => {
     setOpenSnackBarSucess(true);
@@ -176,10 +184,11 @@ export const Cadastro: React.FC = () => {
 
   const handleClickCadastrar = () => {
     const novoUsuario: Usuario = {
-      nome: nome,
-      cpf: cpf,
-      email: email,
-      senha: senha,
+      nome,
+      cpf,
+      email,
+      senha,
+      recados: [],
     };
 
     const usuarioExistente = usuarios.find(
@@ -191,7 +200,7 @@ export const Cadastro: React.FC = () => {
       return;
     }
 
-    dispatch(adicionarUsuario(novoUsuario));
+    dispatch(adicionarUsuarioAPI(novoUsuario));
     handleClickSnackBarSucess();
     limparCampos();
     setTimeout(() => {

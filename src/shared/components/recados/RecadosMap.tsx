@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Box, Modal, TextField } from "@mui/material";
+import { Box, IconButton, Modal, TextField } from "@mui/material";
 import { Heading } from "../heading/Heading";
-
+import ArchiveIcon from "@mui/icons-material/Archive";
 import { Card, CardContent, Grid, Paper, Typography } from "@mui/material";
-import { useAppDispatch } from "../../../store/modules/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/modules/hooks";
 
-import { Recado } from "../../../store/modules/usuarioLogado/usuarioLogadoSlice";
+import { Recado } from "../../../interfaces";
 import { Button } from "../button/Button";
 import { ButtonStyledOneNote, gridNotes, paperNotes } from "./RecadosStyled";
 import {
-  atualizarItem,
-  removerItem,
+  atualizarRecadoAPI,
+  // buscarRecadosUsuarioAPI,
+  deletarRecadoAPI,
 } from "../../../store/modules/recados/recadosSlice";
 import {
   buttonStyledModal,
@@ -19,7 +20,12 @@ import {
   ModalStyled,
 } from "../modal/ModalStyled";
 
-export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
+export const Recados: React.FC<Recado> = ({
+  id,
+  detalhamento,
+  descricao,
+  status,
+}) => {
   const [novoDetalhamento, setnovoDetalhamento] = useState(detalhamento);
   const [novaDescricao, setnovaDescricao] = useState(descricao);
 
@@ -31,13 +37,24 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
   const handleOpenExclude = () => setOpenExclude(true);
   const handleCloseExclude = () => setOpenExclude(false);
 
+  const [openArchive, setOpenArchive] = useState(false);
+  const handleOpenArchive = () => setOpenArchive(true);
+  const handleCloseArchive = () => setOpenArchive(false);
+
   const dispatch = useAppDispatch();
+  const usuarioLogado = useAppSelector((estado) => estado.usuarioLogado);
+
+  // useEffect(() => {
+  //   dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
+  // }, [usuarioLogado, dispatch]);
 
   const handleUpdateRecado = () => {
     dispatch(
-      atualizarItem({
-        id: id,
-        changes: {
+      atualizarRecadoAPI({
+        cpf: usuarioLogado,
+        recado: {
+          id,
+          status,
           detalhamento: novoDetalhamento,
           descricao: novaDescricao,
         },
@@ -47,8 +64,23 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
   };
 
   const handleRemoveRecado = () => {
-    dispatch(removerItem(id));
+    dispatch(deletarRecadoAPI({ cpf: usuarioLogado, id }));
     handleCloseExclude();
+  };
+
+  const handleArchiveRecado = () => {
+    dispatch(
+      atualizarRecadoAPI({
+        cpf: usuarioLogado,
+        recado: {
+          id,
+          status: "arquivado",
+          detalhamento,
+          descricao,
+        },
+      })
+    );
+    handleCloseArchive();
   };
 
   return (
@@ -59,13 +91,23 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
             <CardContent>
               <Typography variant="h5" align="center">
                 Recado
+                <IconButton
+                  color="info"
+                  aria-label="archive"
+                  onClick={handleOpenArchive}
+                >
+                  <ArchiveIcon />
+                </IconButton>
               </Typography>
 
               <Typography sx={{ my: 2 }} variant="body1" align="center">
                 {detalhamento}
               </Typography>
-              <Typography variant="body2" align="center">
+              <Typography sx={{ my: 2 }} variant="body2" align="center">
                 {descricao}
+              </Typography>
+              <Typography variant="body2" align="center">
+                {status}
               </Typography>
             </CardContent>
             <Grid container sx={{ justifyContent: "center" }}>
@@ -78,6 +120,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
                 myOnClick={handleOpenEdit}
                 sx={ButtonStyledOneNote}
               ></Button>
+
               <Button
                 texto="Excluir"
                 tipoBotao="button"
@@ -130,6 +173,7 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
               myOnClick={handleUpdateRecado}
               sx={buttonStyledModal}
             ></Button>
+
             <Button
               texto="Cancelar"
               tipoBotao="button"
@@ -172,6 +216,41 @@ export const Recados: React.FC<Recado> = ({ id, detalhamento, descricao }) => {
               tamanho="small"
               variacao="contained"
               myOnClick={handleCloseExclude}
+              sx={buttonStyledModalExclude}
+            ></Button>
+          </Grid>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openArchive}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={ModalStyled}>
+          <Heading
+            texto="Deseja arquivar o Recado?"
+            tamanho="h6"
+            sx={{ color: "#069dad", display: "flex", justifyContent: "center" }}
+          />
+
+          <Grid container sx={{ justifyContent: "center" }}>
+            <Button
+              texto="Confirmar"
+              tipoBotao="button"
+              cor="success"
+              tamanho="small"
+              variacao="contained"
+              myOnClick={handleArchiveRecado}
+              sx={buttonStyledModalExclude}
+            ></Button>
+            <Button
+              texto="Cancelar"
+              tipoBotao="button"
+              cor="error"
+              tamanho="small"
+              variacao="contained"
+              myOnClick={handleCloseArchive}
               sx={buttonStyledModalExclude}
             ></Button>
           </Grid>

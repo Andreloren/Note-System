@@ -9,4 +9,6 @@ const rootReducer = combineReducers({
   recados,
 });
 
+export type State = ReturnType<typeof combineReducers>;
+
 export default rootReducer;

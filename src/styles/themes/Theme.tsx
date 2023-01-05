@@ -8,8 +8,7 @@ import { Button, CssBaseline } from "@mui/material";
 import PagesRoutes from "../../routes/PagesRoutes";
 import { ThemeStyleButton } from "../themes/ThemeStyled";
 import { Provider } from "react-redux";
-import { meuPersistor, minhaStore } from "../../store";
-import { PersistGate } from "redux-persist/lib/integration/react";
+import { minhaStore } from "../../store";
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -56,15 +55,13 @@ const ToggleColorMode: React.FC = () => {
 
   return (
     <Provider store={minhaStore}>
-      <PersistGate loading={null} persistor={meuPersistor}>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <MyButton />
-            <PagesRoutes />
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-      </PersistGate>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <MyButton />
+          <PagesRoutes />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
     </Provider>
   );
 };

@@ -26,6 +26,12 @@ export const buttonStyledNote = {
   margin: "20px",
 };
 
+export const buttonStyledArchive = {
+  position: "fixed",
+  bottom: 0,
+  right: 0,
+};
+
 export const ButtonStyledOneNote = {
   width: "30%",
   padding: "10px 0",
