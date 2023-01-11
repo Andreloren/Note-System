@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Box, IconButton, Modal, TextField } from "@mui/material";
 import { Heading } from "../heading/Heading";
@@ -12,7 +12,6 @@ import { ButtonStyledOneNote, gridNotes, paperNotes } from "./RecadosStyled";
 import {
   atualizarRecadoAPI,
   buscarRecadosUsuarioAPI,
-  // buscarRecadosUsuarioAPI,
   deletarRecadoAPI,
 } from "../../../store/modules/recados/recadosSlice";
 import {
@@ -44,10 +43,6 @@ export const Recados: React.FC<Recado> = ({
 
   const dispatch = useAppDispatch();
   const usuarioLogado = useAppSelector((estado) => estado.usuarioLogado);
-
-  // useEffect(() => {
-  //   dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
-  // }, [usuarioLogado, dispatch]);
 
   const handleUpdateRecado = () => {
     dispatch(
@@ -197,7 +192,7 @@ export const Recados: React.FC<Recado> = ({
         <Box sx={ModalStyled}>
           <Heading
             texto="Deseja realmente excluir o Recado?"
-            tamanho="h6"
+            tamanho="h5"
             sx={{ color: "#069dad", display: "flex", justifyContent: "center" }}
           />
 
@@ -232,7 +227,7 @@ export const Recados: React.FC<Recado> = ({
         <Box sx={ModalStyled}>
           <Heading
             texto="Deseja arquivar o Recado?"
-            tamanho="h6"
+            tamanho="h5"
             sx={{ color: "#069dad", display: "flex", justifyContent: "center" }}
           />
 

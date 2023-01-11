@@ -21,3 +21,8 @@ export interface IdeleteRecado {
   cpf: string;
   id: string;
 }
+
+export interface IFilter {
+  cpf: string;
+  filter?: string;
+}

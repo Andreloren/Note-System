@@ -9,6 +9,7 @@ import {
   IatualizaRecado,
   IcriarRecado,
   IdeleteRecado,
+  IFilter,
   Recado,
 } from "../../../interfaces";
 
@@ -19,10 +20,15 @@ const adapter = createEntityAdapter<Recado>({
 export const { selectAll: buscarRecados, selectById: buscarRecadoPorId } =
   adapter.getSelectors((state: RootState) => state.recados);
 
-export const buscarRecadosUsuarioAPI = createAsyncThunk(
+export const buscarRecadosUsuarioAPI = createAsyncThunk<any, IFilter>(
   "recado/buscarTodos",
-  async (cpf: string) => {
-    const respostaApi = await requisicaoApi.get(`/usuarios/${cpf}/recados`);
+  async (objeto: IFilter) => {
+    let url = `/usuarios/${objeto.cpf}/recados`;
+
+    if (objeto.filter) {
+      url += `?filter=${objeto.filter}`;
+    }
+    const respostaApi = await requisicaoApi.get(url);
 
     const dataPartial = JSON.parse(respostaApi.data);
 
@@ -55,14 +61,14 @@ export const atualizarRecadoAPI = createAsyncThunk(
     const dataPartial = JSON.parse(respostaApi.data);
 
     if (respostaApi.status === 200) {
-      dispatch(buscarRecadosUsuarioAPI(dados.cpf));
+      dispatch(
+        buscarRecadosUsuarioAPI({
+          cpf: dados.cpf,
+        })
+      );
     }
     return dataPartial;
   }
-
-  // const dataPartial = JSON.parse(respostaApi.data);
-
-  // return dataPartial;
 );
 
 export const deletarRecadoAPI = createAsyncThunk(

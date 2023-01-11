@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Grid, IconButton, Paper } from "@mui/material";
+import { Box, Grid, IconButton, Modal, Paper } from "@mui/material";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import { Button } from "../../shared/components/button/Button";
@@ -17,13 +17,14 @@ import {
 } from "../../shared/components/recados/RecadosStyled";
 import { Recados } from "../../shared/components/recados/RecadosMap";
 import { status } from "../../shared/components/tipos/Tipos";
+import { ModalArchive } from "../../shared/components/modal/ModalStyled";
+import { RecadosArquivados } from "../../shared/components/recados/RecadosArquivadosMap";
+import { SearchBar } from "../../shared/components/search/SearchBar";
 
 import { useAppDispatch, useAppSelector } from "../../store/modules/hooks";
 import { limparUsuarioLogado } from "../../store/modules/usuarioLogado/usuarioLogadoSlice";
 import {
   adicionarRecadoAPI,
-  adicionarTodosRecados,
-  atualizarRecadoAPI,
   buscarRecados,
   buscarRecadosUsuarioAPI,
   deletarTodos,
@@ -36,6 +37,10 @@ export const Home: React.FC = () => {
 
   const [detalhamento, setDetalhamento] = useState("");
   const [detalhamentoValido, setDetalhamentoValido] = useState(false);
+
+  const [openArchiveModal, setOpenArchiveModal] = useState(false);
+  const handleOpenModal = () => setOpenArchiveModal(true);
+  const handleCloseModal = () => setOpenArchiveModal(false);
 
   const navigate = useNavigate();
 
@@ -58,7 +63,11 @@ export const Home: React.FC = () => {
   }, [usuarioLogado, navigate]);
 
   useEffect(() => {
-    dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
+    dispatch(
+      buscarRecadosUsuarioAPI({
+        cpf: usuarioLogado,
+      })
+    );
   }, [dispatch, usuarioLogado]);
 
   useEffect(() => {
@@ -120,6 +129,7 @@ export const Home: React.FC = () => {
       navigate("/");
     }, 1000);
   };
+
   return (
     <>
       <Box sx={boxStyledNote}>
@@ -128,7 +138,9 @@ export const Home: React.FC = () => {
           tamanho="h4"
           sx={{ mb: 2, color: "#069dad" }}
         />
+        <SearchBar />
       </Box>
+
       <Box>
         <Grid container md={12} xs={8}>
           <Heading
@@ -191,9 +203,44 @@ export const Home: React.FC = () => {
           ></Button>
         </Grid>
       </Grid>
-      <IconButton color="info" aria-label="archive" sx={buttonStyledArchive}>
+      <IconButton
+        color="success"
+        aria-label="archive"
+        sx={buttonStyledArchive}
+        onClick={handleOpenModal}
+      >
         <UnarchiveIcon fontSize="large" />
       </IconButton>
+
+      <div>
+        <Modal
+          open={openArchiveModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Grid container columns={16} sx={ModalArchive}>
+            {recados
+              .filter((f) => f.status === "arquivado")
+              .map(
+                (card: {
+                  id: string;
+                  status: status;
+                  descricao: string;
+                  detalhamento: string;
+                }) => (
+                  <RecadosArquivados
+                    key={card.id}
+                    id={card.id}
+                    status={card.status}
+                    descricao={card.descricao}
+                    detalhamento={card.detalhamento}
+                  />
+                )
+              )}
+          </Grid>
+        </Modal>
+      </div>
 
       <Grid container columns={16}>
         {recados

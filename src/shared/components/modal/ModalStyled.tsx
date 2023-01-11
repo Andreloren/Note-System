@@ -25,3 +25,16 @@ export const buttonStyledModalExclude = {
   padding: "5px",
   margin: "40px 10px 0 10px",
 };
+
+export const ModalArchive = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "98%",
+  height: 500,
+  borderRadius: "10px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
