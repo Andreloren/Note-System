@@ -42,20 +42,6 @@ export const adicionarUsuarioAPI = createAsyncThunk(
   }
 );
 
-// export const atualizarRecadosUsuarioAPI = createAsyncThunk(
-//   "usuarios/atualizarRecados",
-//   async (novosDados: atualizarUsuario) => {
-//     const respostaApi = await requisicaoApi.put(
-//       `/usuarios/${novosDados.cpf}`,
-//       JSON.stringify(novosDados.recados)
-//     );
-
-//     const dataPartial = JSON.parse(respostaApi.data);
-
-//     return dataPartial;
-//   }
-// );
-
 const usuariosSlice = createSlice({
   name: "usuarios",
   initialState: userAdapter.getInitialState({
@@ -75,15 +61,6 @@ const usuariosSlice = createSlice({
       state.message = action.payload.message;
       userAdapter.addOne(state, action.payload.data);
     });
-
-    // builder.addCase(atualizarRecadosUsuarioAPI.fulfilled, (state, action) => {
-    //   state.success = action.payload.sucess;
-    //   state.message = action.payload.message;
-    //   userAdapter.updateOne(state, {
-    //     id: action.payload.data.cpf,
-    //     changes: action.payload.data,
-    //   });
-    // });
   },
 });
 

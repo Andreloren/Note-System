@@ -56,7 +56,7 @@ export const Recados: React.FC<Recado> = ({
         },
       })
     );
-    dispatch(buscarRecadosUsuarioAPI(usuarioLogado));
+    dispatch(buscarRecadosUsuarioAPI({ cpf: usuarioLogado }));
     handleCloseEdit();
   };
 
