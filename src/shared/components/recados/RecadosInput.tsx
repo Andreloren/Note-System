@@ -1,11 +1,6 @@
-import { TextField, Input } from "@mui/material";
-import React, { InputHTMLAttributes } from "react";
-import {
-  inputLabel,
-  inputSize,
-  inputVariant,
-  textFieldColor,
-} from "../tipos/Tipos";
+import { TextField } from "@mui/material";
+import React from "react";
+import { inputSize, inputVariant } from "../tipos/Tipos";
 
 interface InputNoteProps {
   placeholder?: React.ReactNode;

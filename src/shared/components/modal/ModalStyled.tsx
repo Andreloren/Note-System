@@ -52,5 +52,4 @@ export const ModalAlert = {
   boxShadow: 24,
   p: 4,
   borderRadius: "5px",
-  // alignSelf: "center",
 };

@@ -1,5 +1,3 @@
-import useMediaQuery from "@mui/material/useMediaQuery";
-
 export const formBoxStyledCad = {
   display: "flex",
   flexDirection: "column",
