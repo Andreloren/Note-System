@@ -38,3 +38,19 @@ export const ModalArchive = {
   boxShadow: 24,
   p: 4,
 };
+
+export const ModalAlert = {
+  display: "flex",
+  position: "absolute" as "absolute",
+  top: "25%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  color: "#069dad",
+  bgcolor: "background.paper",
+  border: "1px solid black",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "5px",
+  // alignSelf: "center",
+};

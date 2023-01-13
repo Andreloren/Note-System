@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Grid, IconButton, Modal, Paper } from "@mui/material";
+import { Box, Grid, IconButton, Modal, Paper, Typography } from "@mui/material";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import { Button } from "../../shared/components/button/Button";
@@ -17,7 +17,10 @@ import {
 } from "../../shared/components/recados/RecadosStyled";
 import { Recados } from "../../shared/components/recados/RecadosMap";
 import { status } from "../../shared/components/tipos/Tipos";
-import { ModalArchive } from "../../shared/components/modal/ModalStyled";
+import {
+  ModalAlert,
+  ModalArchive,
+} from "../../shared/components/modal/ModalStyled";
 import { RecadosArquivados } from "../../shared/components/recados/RecadosArquivadosMap";
 import { SearchBar } from "../../shared/components/search/SearchBar";
 
@@ -41,6 +44,10 @@ export const Home: React.FC = () => {
   const [openArchiveModal, setOpenArchiveModal] = useState(false);
   const handleOpenModal = () => setOpenArchiveModal(true);
   const handleCloseModal = () => setOpenArchiveModal(false);
+
+  const [alert, setAlert] = useState(false);
+  const handleOpenAlert = () => setAlert(true);
+  const handleCloseAlert = () => setAlert(false);
 
   const navigate = useNavigate();
 
@@ -105,7 +112,8 @@ export const Home: React.FC = () => {
 
   const handleCadastrarRecados = () => {
     if (!descricao || !detalhamento) {
-      alert("Necessário digitar alguma informação");
+      handleOpenAlert();
+      // alert("Necessário digitar alguma informação");
       return;
     }
 
@@ -239,6 +247,21 @@ export const Home: React.FC = () => {
                 )
               )}
           </Grid>
+        </Modal>
+      </div>
+
+      <div>
+        <Modal
+          open={alert}
+          onClose={handleCloseAlert}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={ModalAlert}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Necessário preencher DETALHAMENTO e DESCRIÇÃO.
+            </Typography>
+          </Box>
         </Modal>
       </div>
 
